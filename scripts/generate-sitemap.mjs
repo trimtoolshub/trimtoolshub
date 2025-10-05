@@ -18,6 +18,25 @@ const getFileModTime = (filePath) => {
   }
 };
 
+// Helper function to get the most recent modification time from multiple files
+const getMostRecentModTime = (filePaths) => {
+  let mostRecent = new Date(0);
+  
+  for (const filePath of filePaths) {
+    try {
+      const stats = fs.statSync(filePath);
+      if (stats.mtime > mostRecent) {
+        mostRecent = stats.mtime;
+      }
+    } catch (error) {
+      // Skip files that don't exist
+      continue;
+    }
+  }
+  
+  return mostRecent.toISOString().split('T')[0];
+};
+
 // Create routes array and remove duplicates
 const routes = [
   '/',
@@ -51,15 +70,36 @@ ${readyRoutes.map(route => {
   // Get appropriate lastmod based on route type
   let lastmod;
   if (route === '/') {
-    lastmod = getFileModTime('./src/pages/Home.jsx');
+    // Homepage: check multiple files that affect it
+    lastmod = getMostRecentModTime([
+      './src/pages/Home.jsx',
+      './src/components/Header.jsx',
+      './src/components/Footer.jsx',
+      './src/styles/home-modern.css'
+    ]);
   } else if (route === '/tools') {
-    lastmod = getFileModTime('./src/pages/AllTools.jsx');
+    // Tools page: check tools-related files
+    lastmod = getMostRecentModTime([
+      './src/pages/AllTools.jsx',
+      './src/tools/registryData.js',
+      './src/tools/registryComponents.jsx'
+    ]);
   } else if (route.startsWith('/tools/')) {
+    // Tool pages: check individual tool files
     const toolSlug = route.replace('/tools/', '');
-    lastmod = getFileModTime(`./src/tools/${toolSlug}/${toolSlug.charAt(0).toUpperCase() + toolSlug.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase())}.jsx`);
+    const toolName = toolSlug.charAt(0).toUpperCase() + toolSlug.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+    lastmod = getFileModTime(`./src/tools/${toolSlug}/${toolName}.jsx`);
   } else if (route.startsWith('/blog/')) {
+    // Blog posts: check blog data file
     lastmod = getFileModTime('./src/data/blogPosts.js');
+  } else if (route === '/blog') {
+    // Blog hub: check blog-related files
+    lastmod = getMostRecentModTime([
+      './src/pages/Blog.jsx',
+      './src/data/blogPosts.js'
+    ]);
   } else {
+    // Static pages: use current date
     lastmod = new Date().toISOString().split('T')[0];
   }
   
