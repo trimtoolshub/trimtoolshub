@@ -46,9 +46,39 @@ const BlogCard = ({ post, featured = false }) => {
           padding: '0.25rem 0.75rem',
           borderRadius: '1rem',
           fontSize: '0.875rem',
-          fontWeight: '500'
+          fontWeight: '500',
+          zIndex: 2
         }}>
           Featured
+        </div>
+      )}
+      
+      {/* Feature Image */}
+      {post.featureImage && (
+        <div style={{
+          width: '100%',
+          height: featured ? '200px' : '150px',
+          marginBottom: '1rem',
+          borderRadius: '0.75rem',
+          overflow: 'hidden',
+          position: 'relative'
+        }}>
+          <img
+            src={post.featureImage}
+            alt={post.featureImageAlt || post.title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transition: 'transform 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'scale(1.05)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'scale(1)'
+            }}
+          />
         </div>
       )}
       

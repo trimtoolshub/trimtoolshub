@@ -98,6 +98,8 @@ export const blogPosts = [
     title: '10 Essential Developer Tools Every Programmer Should Know in 2024',
     slug: 'essential-developer-tools-2024',
     excerpt: 'Discover the most powerful and time-saving developer tools that can boost your productivity and streamline your coding workflow.',
+    featureImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&crop=center',
+    featureImageAlt: 'Developer workspace with multiple monitors showing code',
     content: `In the fast-paced world of software development, having the right tools can make the difference between a productive day and a frustrating one. As we navigate through 2024, the landscape of developer tools continues to evolve, offering more sophisticated solutions for common programming challenges.
 
 ## 1. JSON Formatter & Validator
@@ -207,6 +209,8 @@ Remember, the best tool is the one that fits your specific needs and integrates 
     title: 'Complete Guide to YouTube SEO Tools for Content Creators',
     slug: 'youtube-seo-tools-guide',
     excerpt: 'Master YouTube SEO with these powerful tools for title generation, hashtag optimization, and trend analysis.',
+    featureImage: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop&crop=center',
+    featureImageAlt: 'YouTube analytics dashboard showing video performance metrics',
     content: `YouTube has become the second-largest search engine globally, making SEO optimization crucial for content creators. With over 2 billion logged-in users monthly, the competition is fierce, but the right tools can give you a significant advantage.
 
 ## Understanding YouTube SEO
@@ -315,6 +319,8 @@ Remember, SEO is a long-term strategy. Consistency, patience, and continuous opt
     title: 'How AI Tools Are Revolutionizing Productivity in 2024',
     slug: 'ai-tools-productivity',
     excerpt: 'Explore the latest AI-powered tools that are transforming how we work, create, and solve problems.',
+    featureImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop&crop=center',
+    featureImageAlt: 'AI and machine learning concept with neural network visualization',
     content: `Artificial Intelligence has moved from science fiction to everyday reality, fundamentally changing how we approach productivity and problem-solving. In 2024, AI tools are no longer just nice-to-have additions—they're essential components of modern workflows.
 
 ## The AI Productivity Revolution

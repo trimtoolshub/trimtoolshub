@@ -54,7 +54,7 @@ const Home = () => {
                       </p>
                       <div className="hero-stats">
                             <div className="stat">
-                              <span className="stat-number">75+</span>
+                              <span className="stat-number">102+</span>
                               <span className="stat-label">Tools</span>
                             </div>
                         <div className="stat">

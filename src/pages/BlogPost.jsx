@@ -157,6 +157,29 @@ const BlogPost = () => {
                 {post.excerpt}
               </p>
               
+              {/* Feature Image */}
+              {post.featureImage && (
+                <div style={{
+                  width: '100%',
+                  maxWidth: '800px',
+                  height: '400px',
+                  margin: '0 auto 2rem auto',
+                  borderRadius: '1rem',
+                  overflow: 'hidden',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+                }}>
+                  <img
+                    src={post.featureImage}
+                    alt={post.featureImageAlt || post.title}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
+              )}
+              
               <div style={{ 
                 display: 'flex', 
                 justifyContent: 'center', 

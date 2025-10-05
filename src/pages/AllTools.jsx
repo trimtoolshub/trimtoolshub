@@ -129,7 +129,7 @@ const AllTools = () => {
                               <option value="">All Categories</option>
                               {toolCategories.map(category => (
                                 <option key={category.id} value={category.id}>
-                                  {category.icon} {category.name}
+                                  {category.name}
                                 </option>
                               ))}
                             </select>

@@ -101,7 +101,7 @@ export const toolComponents = {
 
   // Website Management Tools
   'keyword-density-checker': lazy(() => import('./keyword-density-checker/KeywordDensityChecker.jsx')),
-  'robots-txt-generator': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Robots.txt Generator" /> })),
+  'robots-txt-generator': lazy(() => import('./robots-txt-generator/RobotsTxtGenerator.jsx')),
   'domain-to-ip': lazy(() => import('./domain-to-ip/DomainToIp.jsx')),
   'http-status-checker': lazy(() => import('./http-status-checker/HttpStatusChecker.jsx')),
   'htaccess-redirect-generator': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Htaccess Redirect Generator" /> })),
@@ -109,7 +109,7 @@ export const toolComponents = {
   'server-status-checker': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Server Status Checker" /> })),
   'hosting-checker': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Hosting Checker" /> })),
           'what-is-my-browser': lazy(() => import('./what-is-my-browser/WhatIsMyBrowser')),
-  'what-is-my-user-agent': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="What Is My User Agent" /> })),
+  'what-is-my-user-agent': lazy(() => import('./what-is-my-user-agent/WhatIsMyUserAgent.jsx')),
   'open-graph-checker': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Open Graph Checker" /> })),
   'open-graph-generator': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Open Graph Generator" /> })),
   'get-http-headers': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Get HTTP Headers" /> })),
