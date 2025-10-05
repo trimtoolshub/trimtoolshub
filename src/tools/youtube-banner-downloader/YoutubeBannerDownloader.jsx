@@ -148,6 +148,25 @@ const YoutubeBannerDownloader = () => {
             promotional materials.
           </p>
           
+          <div style={{
+            backgroundColor: '#fff3cd',
+            border: '1px solid #ffeaa7',
+            borderRadius: '0.5rem',
+            padding: '1rem',
+            marginTop: '1rem'
+          }}>
+            <h4 style={{ margin: '0 0 0.5rem 0', color: '#856404' }}>
+              <FontAwesomeIcon icon="fas fa-exclamation-triangle" style={{ marginRight: '0.5rem' }} />
+              Important Legal Notice
+            </h4>
+            <p style={{ margin: 0, fontSize: '0.9rem', color: '#856404' }}>
+              <strong>Copyright Notice:</strong> Channel banners are owned by their respective creators/channels. 
+              This tool is for educational and research purposes only. Users are responsible for ensuring 
+              they have proper rights to download and use any content. We do not host or store copyrighted 
+              material. Please respect intellectual property rights and YouTube's Terms of Service.
+            </p>
+          </div>
+          
           <p style={{ marginBottom: '1rem' }}>
             The tool provides comprehensive banner access including: <strong>Multiple Sizes:</strong> 
             Mobile (320x180), Tablet (640x360), Desktop (1280x720), TV (1920x1080), and Original 

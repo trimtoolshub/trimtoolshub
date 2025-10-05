@@ -89,6 +89,17 @@ const ToolPage = () => {
 
   const faqs = generateFAQs(tool)
 
+  // Generate breadcrumbs
+  const generateBreadcrumbs = (tool) => {
+    return [
+      { name: 'Home', url: '/' },
+      { name: 'Tools', url: '/tools' },
+      { name: tool.name, url: `/tools/${tool.slug}` }
+    ]
+  }
+
+  const breadcrumbs = generateBreadcrumbs(tool)
+
   const structuredData = {
     '@type': 'SoftwareApplication',
     name: tool.name,
@@ -113,7 +124,7 @@ const ToolPage = () => {
   return (
     <>
       <SEO 
-        title={`${tool.name} – Free Online Tool | TrimToolsHub`}
+        title={`${tool.name} | Free Online Tool – TrimToolsHub`}
         description={tool.shortDescription}
         canonical={`/tools/${tool.slug}`}
         structuredData={structuredData}
@@ -121,6 +132,8 @@ const ToolPage = () => {
         toolName={tool.name}
         toolCategory={tool.category}
         toolSlug={tool.slug}
+        faqs={faqs}
+        breadcrumbs={breadcrumbs}
       />
       
       <div className="container">

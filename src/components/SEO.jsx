@@ -10,7 +10,9 @@ const SEO = ({
   keywords = [],
   toolName = null,
   toolCategory = null,
-  toolSlug = null
+  toolSlug = null,
+  faqs = null,
+  breadcrumbs = null
 }) => {
   const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.trimtoolshub.com'
   const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl
@@ -18,7 +20,7 @@ const SEO = ({
 
   // Generate enhanced title for tool pages
   const enhancedTitle = toolName 
-    ? `${toolName} – Free Online Tool | TrimToolsHub`
+    ? `${toolName} | Free Online Tool – TrimToolsHub`
     : title
 
   // Generate enhanced description for tool pages
@@ -68,8 +70,49 @@ const SEO = ({
     }
   }
 
+  // Generate FAQPage structured data
+  const generateFAQStructuredData = () => {
+    if (!faqs || !Array.isArray(faqs) || faqs.length === 0) return null
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    }
+  }
+
+  // Generate BreadcrumbList structured data
+  const generateBreadcrumbStructuredData = () => {
+    if (!breadcrumbs || !Array.isArray(breadcrumbs) || breadcrumbs.length === 0) return null
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map((crumb, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": crumb.name,
+        "item": crumb.url.startsWith('http') ? crumb.url : `${siteUrl}${crumb.url}`
+      }))
+    }
+  }
+
+  // Combine all structured data
+  const allStructuredData = [
+    structuredData || generateToolStructuredData(),
+    generateFAQStructuredData(),
+    generateBreadcrumbStructuredData()
+  ].filter(Boolean)
+
   // Use provided structured data or auto-generate for tools
-  const finalStructuredData = structuredData || generateToolStructuredData()
+  const finalStructuredData = allStructuredData.length > 0 ? allStructuredData : null
 
   return (
     <Helmet>
@@ -103,9 +146,19 @@ const SEO = ({
       
       {/* Structured Data */}
       {finalStructuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(finalStructuredData)}
-        </script>
+        <>
+          {Array.isArray(finalStructuredData) ? (
+            finalStructuredData.map((schema, index) => (
+              <script key={index} type="application/ld+json">
+                {JSON.stringify(schema)}
+              </script>
+            ))
+          ) : (
+            <script type="application/ld+json">
+              {JSON.stringify(finalStructuredData)}
+            </script>
+          )}
+        </>
       )}
     </Helmet>
   )
