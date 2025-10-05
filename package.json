@@ -1,0 +1,61 @@
+{
+  "name": "trimtoolshub",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A comprehensive collection of free online tools for developers, designers, and content creators",
+  "keywords": [
+    "online-tools",
+    "developer-tools",
+    "ai-tools",
+    "seo-tools",
+    "free-tools",
+    "react",
+    "vite"
+  ],
+  "author": "TrimKore Digital <contact@trimkore.com>",
+  "license": "MIT",
+  "homepage": "https://trimtoolshub.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/trimtoolshub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/trimtoolshub/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/generate-sitemap.mjs && vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "format": "prettier --write \"src/**/*.{js,jsx,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css,md}\"",
+    "test": "echo \"No tests specified\" && exit 0",
+    "analyze": "npm run build && npx vite-bundle-analyzer dist"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.0.1",
+    "@fortawesome/free-brands-svg-icons": "^7.0.1",
+    "@fortawesome/free-solid-svg-icons": "^7.0.1",
+    "@fortawesome/react-fontawesome": "^3.0.2",
+    "@vercel/analytics": "^1.5.0",
+    "dayjs": "^1.11.10",
+    "marked": "^11.1.1",
+    "papaparse": "^5.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet-async": "^2.0.5",
+    "react-router-dom": "^6.20.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "terser": "^5.44.0",
+    "vite": "^5.0.0"
+  }
+}
