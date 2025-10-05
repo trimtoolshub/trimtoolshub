@@ -53,10 +53,10 @@ const Home = () => {
                         <span className="highlight">No registration required!</span>
                       </p>
                       <div className="hero-stats">
-                        <div className="stat">
-                          <span className="stat-number">70+</span>
-                          <span className="stat-label">Tools</span>
-                        </div>
+                            <div className="stat">
+                              <span className="stat-number">75+</span>
+                              <span className="stat-label">Tools</span>
+                            </div>
                         <div className="stat">
                           <span className="stat-number">100%</span>
                           <span className="stat-label">Free</span>

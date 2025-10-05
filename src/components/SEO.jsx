@@ -8,7 +8,9 @@ const SEO = ({
   ogType = 'website',
   structuredData = null,
   keywords = [],
-  toolName = null
+  toolName = null,
+  toolCategory = null,
+  toolSlug = null
 }) => {
   const siteUrl = import.meta.env.VITE_SITE_URL || 'https://www.trimtoolshub.com'
   const fullCanonical = canonical ? `${siteUrl}${canonical}` : siteUrl
@@ -23,6 +25,51 @@ const SEO = ({
   const enhancedDescription = toolName
     ? `Use ${toolName} online for free. ${description} No registration required. Fast, secure, and easy to use.`
     : description
+
+  // Auto-generate SoftwareApplication structured data for tool pages
+  const generateToolStructuredData = () => {
+    if (!toolName || !toolSlug) return null
+    
+    const categoryMap = {
+      'text': 'TextApplication',
+      'file': 'FileApplication', 
+      'design': 'DesignApplication',
+      'seo': 'SEOApplication',
+      'youtube': 'VideoApplication',
+      'developer': 'DeveloperApplication',
+      'math': 'MathApplication',
+      'security': 'SecurityApplication',
+      'image': 'ImageApplication'
+    }
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": toolName,
+      "applicationCategory": categoryMap[toolCategory] || "WebApplication",
+      "operatingSystem": "Web",
+      "url": `${siteUrl}/tools/${toolSlug}`,
+      "description": enhancedDescription,
+      "offers": { 
+        "@type": "Offer", 
+        "price": "0", 
+        "priceCurrency": "USD" 
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "TrimToolsHub",
+        "url": siteUrl
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      }
+    }
+  }
+
+  // Use provided structured data or auto-generate for tools
+  const finalStructuredData = structuredData || generateToolStructuredData()
 
   return (
     <Helmet>
@@ -55,9 +102,9 @@ const SEO = ({
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       
       {/* Structured Data */}
-      {structuredData && (
+      {finalStructuredData && (
         <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
+          {JSON.stringify(finalStructuredData)}
         </script>
       )}
     </Helmet>

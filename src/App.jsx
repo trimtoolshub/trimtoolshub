@@ -10,6 +10,7 @@ import BlogPost from './pages/BlogPost'
 import Docs from './pages/Docs'
 import Terms from './pages/Terms'
 import NotFound from './pages/NotFound'
+import TextToolsCategory from './pages/categories/TextToolsCategory'
 import CookieConsent from './components/CookieConsent'
 import AdBlockDetector from './components/AdBlockDetector'
 import VercelAnalytics from './components/analytics/VercelAnalytics'
@@ -33,7 +34,7 @@ function App() {
       }
       window.gtag = gtag
       gtag('js', new Date())
-      gtag('config', gaId)
+      gtag('config', gaId, { anonymize_ip: true })
     }
   }, [])
 
@@ -56,16 +57,17 @@ function App() {
       <div className="app">
         <Header />
         <main className="main">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/tools" element={<AllTools />} />
-            <Route path="/tools/:slug" element={<ToolPage />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/docs" element={<Docs />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/tools" element={<AllTools />} />
+              <Route path="/tools/:slug" element={<ToolPage />} />
+              <Route path="/tools/text" element={<TextToolsCategory />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/docs" element={<Docs />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
         </main>
         <Footer />
         

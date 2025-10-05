@@ -11,6 +11,43 @@
     <meta name="theme-color" content="#3b82f6" />
     <meta name="google-adsense-account" content="ca-pub-4948235791345629" />
     <link rel="canonical" href="https://www.trimtoolshub.com" />
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/styles/critical.css" as="style" />
+    <link rel="preload" href="/src/main.jsx" as="script" />
+    
+    <!-- Critical CSS inline for LCP optimization -->
+    <style>
+      /* Critical CSS for Above-the-Fold Content */
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; line-height: 1.6; color: #333; background-color: #fff; }
+      .hero-modern { position: relative; min-height: 80vh; display: flex; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); overflow: hidden; padding: 4rem 0; }
+      .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 2; }
+      .hero-text { color: white; }
+      .hero-title { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin: 0 0 1.5rem 0; }
+      .gradient-text { background: linear-gradient(45deg, #ff6b6b, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+      .hero-description { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
+      .hero-stats { display: flex; gap: 2rem; margin-bottom: 2rem; }
+      .stat { text-align: center; }
+      .stat-number { display: block; font-size: 2rem; font-weight: 700; color: white; }
+      .stat-label { font-size: 0.9rem; opacity: 0.8; }
+      .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+      .btn-primary-hero, .btn-secondary-hero { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; border-radius: 0.75rem; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease; border: none; cursor: pointer; }
+      .btn-primary-hero { background: #ff6b6b; color: white; }
+      .btn-secondary-hero { background: rgba(255, 255, 255, 0.2); color: white; backdrop-filter: blur(10px); }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+      @media (max-width: 768px) { .hero-content { grid-template-columns: 1fr; gap: 2rem; text-align: center; } .hero-title { font-size: 2.5rem; } .hero-stats { justify-content: center; } .hero-actions { justify-content: center; } }
+    </style>
+    
+    <!-- Load non-critical CSS asynchronously -->
+    <link rel="stylesheet" href="/src/styles/critical.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="/src/styles/critical.css" /></noscript>
   </head>
   <body>
     <div id="root"></div>

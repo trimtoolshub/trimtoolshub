@@ -85,7 +85,6 @@ export const toolComponents = {
 
   // Text Analysis Tools
   'article-rewriter': lazy(() => import('./article-rewriter/ArticleRewriter.jsx')),
-  'backlink-checker': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="Backlink Checker" /> })),
   'url-rewriting-tool': lazy(() => Promise.resolve({ default: () => <PlaceholderTool toolName="URL Rewriting Tool" /> })),
   'backwards-text-generator': lazy(() => import('./backwards-text-generator/BackwardsTextGenerator.jsx')),
   'text-to-hashtags': lazy(() => import('./text-to-hashtags/TextToHashtags.jsx')),
@@ -158,6 +157,11 @@ export const toolComponents = {
           'gradient-generator': lazy(() => import('./gradient-generator/GradientGenerator.jsx')),
           'contrast-checker': lazy(() => import('./contrast-checker/ContrastChecker.jsx')),
           'palette-extractor': lazy(() => import('./palette-extractor/PaletteExtractor.jsx')),
+          'backlink-checker': lazy(() => import('./backlink-checker/BacklinkChecker.jsx')),
+          'website-speed-test': lazy(() => import('./website-speed-test/WebsiteSpeedTest.jsx')),
+          'qr-code-scanner': lazy(() => import('./qr-code-scanner/QrCodeScanner.jsx')),
+          'password-strength-checker': lazy(() => import('./password-strength-checker/PasswordStrengthChecker.jsx')),
+          'image-resizer': lazy(() => import('./image-resizer/ImageResizer.jsx')),
           'font-pairing': lazy(() => import('./font-pairing/FontPairing.jsx')),
 
           // Math & Science Tools

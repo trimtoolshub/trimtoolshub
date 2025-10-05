@@ -7,11 +7,15 @@ import AdSlot from '../components/AdSlot'
 import FAQ from '../components/FAQ'
 import RelatedTools from '../components/RelatedTools'
 import ToolDescription from '../components/ToolDescription'
+import useToolTracking from '../hooks/useToolTracking'
 
 const ToolPage = () => {
   const { slug } = useParams()
   const tool = getToolBySlug(slug)
   const ToolComponent = getToolComponent(slug)
+
+  // Track tool usage for analytics
+  useToolTracking(slug, tool?.name)
 
   if (!tool) {
     return (
@@ -115,6 +119,8 @@ const ToolPage = () => {
         structuredData={structuredData}
         keywords={tool.keywords}
         toolName={tool.name}
+        toolCategory={tool.category}
+        toolSlug={tool.slug}
       />
       
       <div className="container">
