@@ -90,6 +90,38 @@
   font-weight: 500;
 }
 
+.analytics-stat {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.analytics-stat .stat-icon {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.analytics-stat .stat-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.analytics-stat .stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.analytics-stat .stat-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
 .hero-actions {
   display: flex;
   gap: 1rem;

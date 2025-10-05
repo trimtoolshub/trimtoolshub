@@ -4,6 +4,7 @@ import { getFeaturedTools, toolCategories } from '../tools/registryData.js'
 import { getFeaturedBlogPosts } from '../data/blogPosts.js'
 import SEO from '../components/SEO'
 import FontAwesomeIcon from '../components/FontAwesomeIcon'
+import VercelAnalyticsStats from '../components/VercelAnalyticsStats'
 import '../styles/home-modern.css'
 
 const Home = () => {
@@ -64,6 +65,7 @@ const Home = () => {
                           <span className="stat-number">∞</span>
                           <span className="stat-label">Uses</span>
                         </div>
+                        <VercelAnalyticsStats />
                       </div>
                       <div className="hero-actions">
                         <Link to="/tools" className="btn-primary-hero">
