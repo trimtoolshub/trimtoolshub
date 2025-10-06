@@ -125,7 +125,7 @@ const Home = () => {
               <h2 style={{ textAlign: 'center', marginBottom: '3rem', color: 'var(--text-primary)' }}>
                 Tool Categories
               </h2>
-              <div className="category-4-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+              <div className="category-4-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', alignItems: 'stretch' }}>
                 {toolCategories.slice(0, 4).map((category) => (
               <div key={category.id} className="category-card" style={{
                 backgroundColor: 'var(--bg-card)',
@@ -135,7 +135,10 @@ const Home = () => {
                 textAlign: 'center',
                 transition: 'all 0.3s ease',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
               }}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-4px)'
@@ -167,16 +170,19 @@ const Home = () => {
                 </h3>
                 <p style={{ 
                   color: 'var(--text-secondary)', 
-                  marginBottom: '1.5rem',
+                  marginBottom: 'auto',
                   fontSize: '0.95rem',
-                  lineHeight: '1.5'
+                  lineHeight: '1.5',
+                  flexGrow: 1
                 }}>
                   {category.description}
                 </p>
                 <Link 
                   to={`/tools?category=${category.id}`}
                   style={{
-                    display: 'inline-block',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
                     padding: '0.75rem 1.5rem',
                     backgroundColor: category.color,
                     color: 'white',
@@ -185,7 +191,8 @@ const Home = () => {
                     fontWeight: '600',
                     transition: 'all 0.2s ease',
                     fontSize: '0.9rem',
-                    letterSpacing: '0.025em'
+                    letterSpacing: '0.025em',
+                    marginTop: '1rem'
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.opacity = '0.9'
@@ -208,7 +215,7 @@ const Home = () => {
 
               {/* Second row of categories */}
               <section style={{ marginBottom: '4rem' }}>
-                <div className="category-4-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+                <div className="category-4-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', alignItems: 'stretch' }}>
                   {toolCategories.slice(4, 8).map((category) => (
                     <div key={category.id} className="category-card" style={{
                       backgroundColor: 'var(--bg-card)',
@@ -218,7 +225,10 @@ const Home = () => {
                       textAlign: 'center',
                       transition: 'all 0.3s ease',
                       position: 'relative',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      height: '100%'
                     }}
                     onMouseEnter={(e) => {
                       e.target.style.transform = 'translateY(-4px)'
