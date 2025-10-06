@@ -309,6 +309,17 @@ body {
     display: none;
   }
   
+  /* Article layout responsive */
+  .article-layout {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  .article-layout .sidebar {
+    order: -1;
+    position: static !important;
+  }
+  
   /* Show popular tools as horizontal scroll on mobile */
   .popular-tools-mobile {
     display: block !important;
