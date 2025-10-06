@@ -118,14 +118,14 @@ const Home = () => {
       <AdSlot slotId="hero-banner" size="banner" style={{ margin: '2rem auto', maxWidth: '728px' }} />
 
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem', alignItems: 'start' }}>
+        <div className="main-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem', alignItems: 'start' }}>
           <div>
             {/* Tool Categories */}
             <section style={{ marginBottom: '4rem' }}>
               <h2 style={{ textAlign: 'center', marginBottom: '3rem', color: 'var(--text-primary)' }}>
                 Tool Categories
               </h2>
-              <div className="category-4-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', alignItems: 'stretch' }}>
+              <div className="category-grid">
                 {toolCategories.slice(0, 4).map((category) => (
               <div key={category.id} className="category-card" style={{
                 backgroundColor: 'var(--bg-card)',
@@ -215,7 +215,7 @@ const Home = () => {
 
               {/* Second row of categories */}
               <section style={{ marginBottom: '4rem' }}>
-                <div className="category-4-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', alignItems: 'stretch' }}>
+                <div className="category-grid">
                   {toolCategories.slice(4, 8).map((category) => (
                     <div key={category.id} className="category-card" style={{
                       backgroundColor: 'var(--bg-card)',
@@ -301,7 +301,7 @@ const Home = () => {
 
               {/* Third row of categories */}
               <section style={{ marginBottom: '4rem' }}>
-                <div className="category-4-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+                <div className="category-grid">
                   {toolCategories.slice(8).map((category) => (
                     <div key={category.id} className="category-card" style={{
                       backgroundColor: 'var(--bg-card)',
@@ -494,7 +494,7 @@ const Home = () => {
             </div>
 
             {/* Sidebar */}
-            <div style={{ position: 'sticky', top: '100px' }}>
+            <div className="sidebar" style={{ position: 'sticky', top: '100px' }}>
               {/* Sidebar Ad Above Popular Tools */}
               <AdSlot slotId="sidebar-ad-top" size="rectangle" style={{ marginBottom: '1.5rem' }} />
               

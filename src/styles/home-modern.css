@@ -362,6 +362,67 @@
   }
 }
 
+/* Category Cards Responsive Styles */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .category-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .category-card {
+    padding: 1rem !important;
+  }
+  
+  .category-card h3 {
+    font-size: 1.1rem !important;
+  }
+  
+  .category-card p {
+    font-size: 0.9rem !important;
+  }
+  
+  .category-card .fa {
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .category-card {
+    padding: 1.25rem !important;
+  }
+}
+
+/* Main Layout Responsive */
+@media (max-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  .sidebar {
+    order: -1;
+    position: static !important;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-modern {
     min-height: 70vh;
