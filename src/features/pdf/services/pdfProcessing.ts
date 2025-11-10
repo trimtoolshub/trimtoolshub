@@ -21,7 +21,7 @@ export async function mergePdfs(files: File[]): Promise<PdfMergeResult> {
   }
 
   const mergedBytes = await merged.save({ useObjectStreams: true });
-  const blob = new Blob([mergedBytes.buffer], { type: 'application/pdf' });
+  const blob = new Blob([mergedBytes.buffer as ArrayBuffer], { type: 'application/pdf' });
 
   return {
     blob,
@@ -48,7 +48,7 @@ export async function extractPageRanges(file: File, rangeExpression: string): Pr
 
   const resultBytes = await result.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-extract.pdf`,
   };
 }
@@ -72,7 +72,7 @@ export async function splitPdf(file: File): Promise<SplitPdfResult[]> {
     const pageBytes = await result.save({ useObjectStreams: true });
     results.push({
       filename: `${file.name.replace(/\.pdf$/i, '')}-page-${index + 1}.pdf`,
-      blob: new Blob([pageBytes.buffer], { type: 'application/pdf' }),
+      blob: new Blob([pageBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
     });
   }
 
@@ -96,7 +96,7 @@ export async function rotatePdf(file: File, rotationMap: Record<number, 0 | 90 |
 
   const resultBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-rotated.pdf`,
   };
 }
@@ -132,7 +132,7 @@ export async function imagesToPdf(files: File[]): Promise<PdfMergeResult> {
 
   const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([pdfBytes.buffer], { type: 'application/pdf' }),
+    blob: new Blob([pdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
     filename: `images-${new Date().toISOString().replace(/[:.]/g, '-')}.pdf`,
   };
 }
@@ -142,7 +142,7 @@ export async function compressPdf(file: File): Promise<PdfMergeResult> {
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
   const compressedBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([compressedBytes.buffer], { type: 'application/pdf' }),
+    blob: new Blob([compressedBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-compressed.pdf`,
   };
 }
@@ -202,7 +202,7 @@ export async function watermarkPdf(file: File, options: WatermarkOptions): Promi
 
   const resultBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-watermarked.pdf`,
   };
 }
@@ -246,7 +246,7 @@ export async function signPdf(file: File, signatures: SignatureOptions[]): Promi
       try {
         const base64Data = sig.signatureData.split(',')[1] || sig.signatureData;
         const imageBytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
-        const embedded = await doc.embedPng(imageBytes.buffer);
+        const embedded = await doc.embedPng(imageBytes.buffer as ArrayBuffer);
         const { width: imgWidth, height: imgHeight } = embedded.scale(0.5);
 
         page.drawImage(embedded, {
@@ -263,7 +263,7 @@ export async function signPdf(file: File, signatures: SignatureOptions[]): Promi
 
   const resultBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-signed.pdf`,
   };
 }
@@ -296,7 +296,7 @@ export async function ocrPdf(file: File, language: string = 'eng'): Promise<PdfM
 
     const resultBytes = await doc.save({ useObjectStreams: true });
     return {
-      blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
+      blob: new Blob([resultBytes.buffer as ArrayBuffer], { type: 'application/pdf' }),
       filename: `${file.name.replace(/\.pdf$/i, '')}-ocr.pdf`,
     };
   } finally {
