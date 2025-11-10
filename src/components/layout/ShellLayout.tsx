@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { AdSlot } from '../ads/AdSlot';
+import { NavLink, Outlet, Link } from 'react-router-dom';
 
 const NAV_LINKS = [
   { to: '/', label: 'Overview' },
   { to: '/pdf', label: 'PDF Toolkit' },
   { to: '/qr', label: 'QR & vCard' },
-  { to: '/barcodes', label: 'Barcodes' },
-  { to: '/cad', label: 'CAD Viewers' },
+  { to: '/images', label: 'Image Converter' },
+  { to: '/cad', label: 'CAD Tools' },
 ];
 
 export function ShellLayout() {
@@ -71,30 +70,72 @@ export function ShellLayout() {
         </div>
       </main>
       <footer className="border-t border-white/5 bg-slate-950/60">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10">
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Sponsored</h2>
-            <AdSlot
-              slotId={import.meta.env.VITE_ADSENSE_SLOT_FOOTER}
-              className="mt-3 min-h-[90px] rounded-2xl bg-slate-900/60 p-4"
-              format="auto"
-            />
+        <div className="mx-auto w-full max-w-6xl px-4 py-10">
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* Quick Links */}
+            <div>
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-slate-300">Tools</h3>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li>
+                  <Link to="/pdf" className="hover:text-white transition-colors">
+                    PDF Tools
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/qr" className="hover:text-white transition-colors">
+                    QR Code Generator
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/images" className="hover:text-white transition-colors">
+                    Image Converter
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/cad" className="hover:text-white transition-colors">
+                    CAD & SketchUp Tools
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* About */}
+            <div>
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-slate-300">About</h3>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li>
+                  <Link to="/privacy" className="hover:text-white transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/terms" className="hover:text-white transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Features */}
+            <div>
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-slate-300">Features</h3>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li className="hover:text-white transition-colors">100% Private</li>
+                <li className="hover:text-white transition-colors">No Registration</li>
+                <li className="hover:text-white transition-colors">Free Forever</li>
+                <li className="hover:text-white transition-colors">Browser-Based</li>
+              </ul>
+            </div>
           </div>
-          <div className="flex flex-col gap-6 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
-            <p>© {new Date().getFullYear()} TrimToolsHub. Private by design, monetized with transparency.</p>
-            <div className="flex flex-wrap items-center gap-4">
-              <a href="/privacy" className="hover:text-white">
-                Privacy
-              </a>
-              <a href="/terms" className="hover:text-white">
-                Terms
-              </a>
-              <a
-                href="mailto:hello@trimtoolshub.com"
-                className="rounded-full border border-white/10 px-4 py-2 hover:border-white/30 hover:text-white"
-              >
-                Contact
-              </a>
+
+          {/* Copyright */}
+          <div className="mt-8 border-t border-white/5 pt-6">
+            <div className="flex flex-col gap-4 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+              <p>© {new Date().getFullYear()} TrimToolsHub. Simple tools that make your life easier.</p>
+              <div className="flex flex-col gap-2 text-xs text-slate-500 md:items-end">
+                <span>Private by design, monetized with transparency</span>
+                <span>Designed and developed by Trimsoft Studio</span>
+              </div>
             </div>
           </div>
         </div>

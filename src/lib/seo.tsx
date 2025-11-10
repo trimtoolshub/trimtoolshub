@@ -9,7 +9,7 @@ export const generatePageTitle = (title: string, siteName = 'TrimToolsHub'): str
 
 export const generateMetaDescription = (
   description: string,
-  defaultDesc = 'Free online PDF tools, QR code generator, and CAD/SketchUp viewer and converter. Merge, split, compress PDFs. Generate QR codes. View DXF and SKP files. Convert between DWG, DXF, and SKP formats. All tools run in your browser with complete privacy.'
+  defaultDesc = 'Free online PDF tools, QR code generator, image converter, and CAD/SketchUp viewer. Merge PDFs, create QR codes, convert images, view CAD files. All tools run in your browser with complete privacy.'
 ): string => {
   return description || defaultDesc;
 };
@@ -23,7 +23,7 @@ export const generateJsonLd = (data?: Record<string, unknown>): Record<string, u
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'TrimToolsHub',
-    description: 'Free online PDF tools, QR code generator, and CAD/SketchUp viewer and converter. All tools run in your browser with complete privacy.',
+    description: 'Free online PDF tools, QR code generator, image converter, and CAD/SketchUp viewer. All tools run in your browser with complete privacy.',
     url: siteUrl,
     applicationCategory: 'WebApplication',
     operatingSystem: 'Web Browser',

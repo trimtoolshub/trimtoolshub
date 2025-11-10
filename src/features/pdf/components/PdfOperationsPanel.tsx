@@ -10,13 +10,12 @@ const OPERATIONS: Array<{ key: PdfOperationType; title: string; description: str
   { key: 'merge', title: 'Merge', description: 'Combine multiple PDFs into a single file.' },
   { key: 'split', title: 'Split', description: 'Split a PDF into individual pages or ranges.' },
   { key: 'extract', title: 'Extract', description: 'Extract specific pages using a range expression.' },
-  { key: 'rotate', title: 'Rotate', description: 'Rotate individual pages before export.' },
   { key: 'compress', title: 'Compress', description: 'Reduce file size by adjusting quality.' },
-  { key: 'img2pdf', title: 'Images → PDF', description: 'Convert images into a multi-page PDF.' },
   { key: 'watermark', title: 'Watermark', description: 'Overlay text or image watermarks.' },
-  { key: 'sign', title: 'Sign', description: 'Add signatures by drawing, typing, or uploading.' },
   { key: 'ocr', title: 'OCR', description: 'Make scanned PDFs searchable with Tesseract.js.' },
   { key: 'pdf2word', title: 'PDF → Word', description: 'Convert PDF to editable Word document.' },
+  { key: 'extractImages', title: 'Extract Images', description: 'Extract all images from PDF pages.' },
+  { key: 'pdf2csv', title: 'PDF → CSV', description: 'Convert PDF tables to CSV format.' },
 ];
 
 export function PdfOperationsPanel({ active, onSelect, disabled }: PdfOperationsPanelProps) {

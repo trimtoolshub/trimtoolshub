@@ -16,6 +16,8 @@ import {
   signPdf,
   ocrPdf,
   pdfToWord,
+  extractImagesFromPdf,
+  pdfToCsv,
   type WatermarkOptions,
   type SignatureOptions,
 } from '../services/pdfProcessing';
@@ -135,9 +137,12 @@ export function PdfWorkspace() {
           if (!selectedFile) {
             throw new Error('Select a PDF to compress.');
           }
-          const result = await compressPdf(selectedFile.file);
+          const result = await compressPdf(selectedFile.file, compressPreset);
           downloadBlob(result.blob, result.filename);
-          successMessage = `Compressed (${compressPreset}) export complete.`;
+          const originalSize = selectedFile.size;
+          const compressedSize = result.blob.size;
+          const reduction = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
+          successMessage = `Compressed (${compressPreset}): ${reduction}% size reduction.`;
           break;
         }
         case 'watermark': {
@@ -179,6 +184,35 @@ export function PdfWorkspace() {
           successMessage = 'PDF converted to Word document.';
           break;
         }
+        case 'extractImages': {
+          if (!selectedFile) {
+            throw new Error('Select a PDF to extract images from.');
+          }
+          const result = await extractImagesFromPdf(selectedFile.file);
+          if (result.images.length === 0) {
+            throw new Error('No images found in this PDF.');
+          }
+          if (result.images.length > 5) {
+            await downloadBatchAsZip(
+              result.images.map((img) => ({ blob: img.blob, filename: img.filename })),
+              `${selectedFile.name.replace(/\.pdf$/i, '')}-images.zip`,
+            );
+            successMessage = `Extracted ${result.images.length} images (bundled as ZIP).`;
+          } else {
+            result.images.forEach((img) => downloadBlob(img.blob, img.filename));
+            successMessage = `Extracted ${result.images.length} image${result.images.length === 1 ? '' : 's'}.`;
+          }
+          break;
+        }
+        case 'pdf2csv': {
+          if (!selectedFile) {
+            throw new Error('Select a PDF to convert to CSV.');
+          }
+          const result = await pdfToCsv(selectedFile.file);
+          downloadBlob(result.blob, result.filename);
+          successMessage = 'PDF converted to CSV file.';
+          break;
+        }
         default:
           throw new Error('Unsupported operation.');
       }
@@ -212,6 +246,8 @@ export function PdfWorkspace() {
       case 'sign':
       case 'ocr':
       case 'pdf2word':
+      case 'extractImages':
+      case 'pdf2csv':
         return !!selectedFile && selectedFile.file.type === 'application/pdf';
       default:
         return false;
@@ -343,6 +379,8 @@ function WorkspaceControls({
   onSignaturesChange,
   ocrLanguage,
   onOcrLanguageChange,
+  pdfEdits,
+  onPdfEditsChange,
 }: WorkspaceControlsProps) {
   if (!files.length) {
     return (
@@ -354,7 +392,7 @@ function WorkspaceControls({
 
   return (
     <div className="space-y-5">
-      {['split', 'extract', 'rotate', 'compress', 'watermark', 'sign', 'ocr', 'pdf2word'].includes(activeOperation) ? (
+      {['split', 'extract', 'rotate', 'compress', 'watermark', 'sign', 'ocr', 'pdf2word', 'extractImages', 'pdf2csv'].includes(activeOperation) ? (
         <div className="space-y-2">
           <label className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Target PDF</label>
           <select
@@ -750,6 +788,162 @@ function OcrControls({ language, onLanguageChange }: OcrControlsProps) {
       <p className="text-xs text-slate-400">
         Note: OCR processing may take longer for large PDFs. Language packs are loaded on-demand.
       </p>
+    </div>
+  );
+}
+
+interface EditPdfControlsProps {
+  edits: EditPdfOptions[];
+  onEditsChange: (edits: EditPdfOptions[]) => void;
+  selectedFile: PdfFileEntry | null;
+}
+
+function EditPdfControls({ edits, onEditsChange, selectedFile }: EditPdfControlsProps) {
+  const [newEdit, setNewEdit] = useState<Partial<EditPdfOptions>>({
+    text: '',
+    x: 100,
+    y: 100,
+    pageIndex: 0,
+    fontSize: 12,
+    color: { r: 0, g: 0, b: 0 },
+  });
+
+  const addEdit = () => {
+    if (!newEdit.text || newEdit.text.trim() === '') {
+      return;
+    }
+    if (selectedFile && newEdit.pageIndex !== undefined && newEdit.pageIndex >= (selectedFile.pageCount || 0)) {
+      return;
+    }
+    onEditsChange([
+      ...edits,
+      {
+        text: newEdit.text || '',
+        x: newEdit.x || 100,
+        y: newEdit.y || 100,
+        pageIndex: newEdit.pageIndex || 0,
+        fontSize: newEdit.fontSize || 12,
+        color: newEdit.color || { r: 0, g: 0, b: 0 },
+      },
+    ]);
+    setNewEdit({
+      text: '',
+      x: 100,
+      y: 100,
+      pageIndex: newEdit.pageIndex || 0,
+      fontSize: 12,
+      color: { r: 0, g: 0, b: 0 },
+    });
+  };
+
+  const removeEdit = (index: number) => {
+    onEditsChange(edits.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div className="space-y-4 rounded-2xl border border-white/10 bg-slate-900/50 p-5">
+      <div className="flex items-center justify-between">
+        <label className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Text Edits</label>
+        <span className="text-xs text-slate-400">{edits.length} edit{edits.length === 1 ? '' : 's'}</span>
+      </div>
+
+      {/* Add new edit form */}
+      <div className="space-y-3 rounded-xl border border-white/10 bg-slate-950/50 p-4">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300">Text</label>
+            <input
+              type="text"
+              value={newEdit.text || ''}
+              onChange={(e) => setNewEdit({ ...newEdit, text: e.target.value })}
+              placeholder="Enter text to add"
+              className="w-full rounded-xl border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-white focus:border-brand-accent focus:outline-none"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300">Page (0-indexed)</label>
+            <input
+              type="number"
+              min="0"
+              max={(selectedFile?.pageCount || 1) - 1}
+              value={newEdit.pageIndex ?? 0}
+              onChange={(e) => setNewEdit({ ...newEdit, pageIndex: parseInt(e.target.value, 10) || 0 })}
+              className="w-full rounded-xl border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-white focus:border-brand-accent focus:outline-none"
+            />
+          </div>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300">X Position</label>
+            <input
+              type="number"
+              value={newEdit.x ?? 100}
+              onChange={(e) => setNewEdit({ ...newEdit, x: parseInt(e.target.value, 10) || 100 })}
+              className="w-full rounded-xl border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-white focus:border-brand-accent focus:outline-none"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300">Y Position</label>
+            <input
+              type="number"
+              value={newEdit.y ?? 100}
+              onChange={(e) => setNewEdit({ ...newEdit, y: parseInt(e.target.value, 10) || 100 })}
+              className="w-full rounded-xl border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-white focus:border-brand-accent focus:outline-none"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-300">Font Size</label>
+            <input
+              type="number"
+              min="8"
+              max="72"
+              value={newEdit.fontSize ?? 12}
+              onChange={(e) => setNewEdit({ ...newEdit, fontSize: parseInt(e.target.value, 10) || 12 })}
+              className="w-full rounded-xl border border-white/10 bg-slate-900/70 px-3 py-2 text-sm text-white focus:border-brand-accent focus:outline-none"
+            />
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={addEdit}
+          className="w-full rounded-xl border border-brand-accent/50 bg-brand-accent/10 px-4 py-2 text-sm font-semibold text-brand-accent transition hover:bg-brand-accent/20"
+        >
+          Add Edit
+        </button>
+      </div>
+
+      {/* List of edits */}
+      {edits.length > 0 ? (
+        <div className="space-y-2">
+          <label className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Current Edits</label>
+          <div className="max-h-64 space-y-2 overflow-y-auto rounded-xl border border-white/10 bg-slate-950/50 p-3">
+            {edits.map((edit, index) => (
+              <div key={index} className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-900/50 p-3">
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-white">{edit.text}</span>
+                    <span className="text-xs text-slate-400">Page {edit.pageIndex + 1}</span>
+                  </div>
+                  <div className="text-xs text-slate-400">
+                    Position: ({edit.x}, {edit.y}) • Size: {edit.fontSize || 12}pt
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeEdit(index)}
+                  className="rounded-lg border border-rose-400/30 bg-rose-400/10 px-3 py-1 text-xs font-semibold text-rose-300 transition hover:bg-rose-400/20"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="rounded-xl border border-white/10 bg-slate-950/50 p-4 text-center text-sm text-slate-400">
+          No edits added yet. Add text edits above to modify your PDF.
+        </div>
+      )}
     </div>
   );
 }

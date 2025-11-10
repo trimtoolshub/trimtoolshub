@@ -2,13 +2,12 @@ export type PdfOperationType =
   | 'merge'
   | 'split'
   | 'extract'
-  | 'rotate'
   | 'compress'
   | 'watermark'
-  | 'sign'
-  | 'img2pdf'
   | 'ocr'
-  | 'pdf2word';
+  | 'pdf2word'
+  | 'extractImages'
+  | 'pdf2csv';
 
 export interface PdfFileEntry {
   id: string;
@@ -16,7 +15,6 @@ export interface PdfFileEntry {
   name: string;
   size: number;
   pageCount?: number;
-  rotationMap: Record<number, 0 | 90 | 180 | 270>;
 }
 
 export interface PdfWorkspaceState {
@@ -37,8 +35,6 @@ export type PdfWorkspaceAction =
   | { type: 'SET_OPERATION'; operation: PdfOperationType }
   | { type: 'SET_RANGE'; range: string }
   | { type: 'SET_COMPRESS'; preset: 'high' | 'medium' | 'low' }
-  | { type: 'SET_ROTATION'; fileId: string; pageIndex: number; rotation: 0 | 90 | 180 | 270 }
-  | { type: 'CLEAR_ROTATIONS'; fileId: string }
   | { type: 'START_PROCESSING' }
   | { type: 'FINISH_PROCESSING'; successMessage?: string }
   | { type: 'SET_ERROR'; error?: string }

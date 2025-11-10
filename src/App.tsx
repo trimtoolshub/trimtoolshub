@@ -7,6 +7,9 @@ import { PdfPage } from './pages/PdfPage';
 import { CadPage } from './pages/CadPage';
 import { QrPage } from './pages/QrPage';
 import { BarcodesPage } from './pages/BarcodesPage';
+import { ImagesPage } from './pages/ImagesPage';
+import { PrivacyPage } from './pages/PrivacyPage';
+import { TermsPage } from './pages/TermsPage';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
           <Route path="/cad" element={<CadPage />} />
           <Route path="/qr" element={<QrPage />} />
           <Route path="/barcodes" element={<BarcodesPage />} />
+          <Route path="/images" element={<ImagesPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
         </Route>
       </Routes>
       <ConsentBanner />

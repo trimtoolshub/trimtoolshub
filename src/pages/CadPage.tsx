@@ -1,4 +1,5 @@
 import { AdSlot } from '../components/ads/AdSlot';
+import { CadWorkspace } from '../features/cad/components/CadWorkspace';
 import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
 
 const cadMilestones = [
@@ -66,14 +67,19 @@ export function CadPage() {
         ))}
       </section>
 
+      <section className="rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-lg shadow-black/30">
+        <CadWorkspace />
+      </section>
+
       <section className="rounded-3xl border border-brand-accent/30 bg-brand-accent/10 p-8 text-sm text-slate-200">
         <h2 className="text-xl font-semibold text-white">How to Use Our CAD & SketchUp Tools</h2>
         <ul className="mt-4 list-inside list-disc space-y-2">
-          <li><strong>View DXF or SKP Files:</strong> Simply drag and drop or select your DXF CAD file or SketchUp SKP file to view it instantly in your browser.</li>
-          <li><strong>Convert File Formats:</strong> Convert between DWG, DXF, and SKP formats. Transform DWG to DXF, DXF to SKP, SKP to DXF, and vice versa. All conversions happen in your browser.</li>
-          <li><strong>Navigate Your Drawing:</strong> Use zoom and pan controls to explore your CAD or SketchUp file. Toggle layers on and off to focus on specific components.</li>
-          <li><strong>Measure Distances:</strong> Click two points to measure distances between elements in your drawing.</li>
-          <li><strong>Export Views:</strong> Export your current view as a PNG or SVG image for sharing or documentation purposes.</li>
+          <li><strong>View DXF Files:</strong> Simply drag and drop or select your DXF CAD file to view it instantly in your browser. The viewer supports layers, zoom, and pan controls.</li>
+          <li><strong>Toggle Layers:</strong> Use the layer panel to show or hide specific layers in your CAD drawing. This helps you focus on specific components or sections.</li>
+          <li><strong>Measure Distances:</strong> Click the "Measure Distance" button, then click two points on the canvas to measure the distance between them. Measurements are displayed in CAD units.</li>
+          <li><strong>Zoom and Pan:</strong> Use the zoom controls (+/-) to zoom in and out, or click "Reset" to return to the default view. Pan by clicking and dragging on the canvas.</li>
+          <li><strong>Export Views:</strong> Export your current view as a PNG image for sharing or documentation purposes. The exported image maintains the current zoom level and layer visibility.</li>
+          <li><strong>Format Conversion:</strong> CAD format conversion (DWG to DXF, DXF to SKP, etc.) requires server-side processing. For now, only DXF files can be viewed directly in the browser. Please use desktop CAD applications for format conversion.</li>
         </ul>
       </section>
     </div>
