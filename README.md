@@ -1,73 +1,97 @@
-# React + TypeScript + Vite
+# TrimToolsHub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A privacy-first web application for everyday file utilities: PDF tools, QR/vCard, barcodes, and lightweight CAD viewers. Client-side by default; optional microservices handle heavy/locked formats.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### PDF Toolkit
+- **Merge** - Combine multiple PDFs into a single file
+- **Split** - Split a PDF into individual pages
+- **Extract** - Extract specific pages using range expressions
+- **Rotate** - Rotate individual pages (0°, 90°, 180°, 270°)
+- **Compress** - Reduce file size with quality presets
+- **Watermark** - Add text or image watermarks with opacity and angle controls
+- **Sign** - Add text or image signatures to PDFs
+- **OCR** - Make scanned PDFs searchable with Tesseract.js (multiple languages)
+- **Image to PDF** - Convert images to PDF documents
+- **PDF to Word** - Convert PDF documents to Word format
 
-## React Compiler
+### QR & vCard
+- Generate QR codes for text, URLs, Wi-Fi, vCard, and geo locations
+- Batch generation from CSV
+- Export as PNG or SVG
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Barcodes
+- Generate CODE128 and EAN-13 barcodes
+- Batch generation from CSV
+- Print-ready label sheet PDFs
 
-## Expanding the ESLint configuration
+### CAD Viewers
+- DXF 2D viewer with zoom/pan
+- Layer visibility controls
+- Distance measurement tools
+- Export as PNG or SVG
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React 18** + **Vite** + **TypeScript**
+- **TailwindCSS** for styling
+- **pdf-lib** for PDF processing
+- **Tesseract.js** for OCR
+- **docx** for Word document generation
+- **qrcode** for QR code generation
+- **jsbarcode** for barcode generation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+The application will be available at `http://localhost:5173`
+
+### Build
+
+```bash
+npm run build
+```
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+VITE_META_PIXEL_ID=000000000000000
+VITE_ADSENSE_CLIENT=ca-pub-XXXXXXXXXXXXXXXX
+VITE_ADSENSE_SLOT_HOME_HERO=0000000000
+VITE_ADSENSE_SLOT_PDF_TOP=0000000000
+VITE_ADSENSE_SLOT_QR_TOP=0000000000
+VITE_ADSENSE_SLOT_BARCODES_TOP=0000000000
+VITE_ADSENSE_SLOT_CAD_TOP=0000000000
+VITE_ADSENSE_SLOT_FOOTER=0000000000
+```
+
+## Privacy & Monetization
+
+- All core tools run entirely in the browser - no file uploads required
+- Optional consent banner for analytics and ads (GDPR-ready)
+- Google Analytics 4 and Meta Pixel integration
+- Google AdSense monetization with responsive ad slots
+
+## License
+
+Private project - All rights reserved
