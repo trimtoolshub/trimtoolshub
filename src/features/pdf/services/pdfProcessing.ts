@@ -312,37 +312,132 @@ export interface WordResult {
 export async function pdfToWord(file: File): Promise<WordResult> {
   const docxModule = await import('docx');
   const { Document, Packer, Paragraph, TextRun } = docxModule;
+  const pdfjsLib = await import('pdfjs-dist');
+  
+  // Set up pdfjs worker - use CDN or local worker
+  if (typeof window !== 'undefined' && !pdfjsLib.GlobalWorkerOptions.workerSrc) {
+    // Use CDN worker for better compatibility
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+  }
+
   const bytes = (await file.arrayBuffer()) as ArrayBuffer;
-  const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
-  const pages = doc.getPages();
+  const loadingTask = pdfjsLib.getDocument({ data: bytes });
+  const pdf = await loadingTask.promise;
+  const numPages = pdf.numPages;
 
   const paragraphs: InstanceType<typeof Paragraph>[] = [];
 
-  // Extract text from each page (simplified - pdf-lib doesn't extract text directly)
-  // In production, you'd use pdf.js or pdf-parse for better text extraction
-  for (let i = 0; i < pages.length; i += 1) {
+  // Extract text from each page
+  for (let i = 1; i <= numPages; i += 1) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    
+    // Add page header
     paragraphs.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: `Page ${i + 1}`,
+            text: `Page ${i}`,
             bold: true,
             size: 24,
           }),
         ],
       }),
     );
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: '[Text extraction from PDF pages - for full text extraction, use a dedicated PDF text extraction library]',
-            size: 20,
+
+    // Extract text items from the page
+    const pageText: string[] = [];
+    let currentLine = '';
+
+    for (const item of textContent.items) {
+      if ('str' in item) {
+        const text = item.str;
+        if (text.trim()) {
+          // Check if this is a new line based on transform or explicit newline
+          if (text.includes('\n') || currentLine.length > 0) {
+            if (text.includes('\n')) {
+              const parts = text.split('\n');
+              if (parts[0]) {
+                currentLine += parts[0];
+              }
+              if (currentLine.trim()) {
+                pageText.push(currentLine.trim());
+              }
+              currentLine = parts[parts.length - 1] || '';
+            } else {
+              currentLine += text;
+            }
+          } else {
+            currentLine += text;
+          }
+        }
+      }
+    }
+
+    // Add remaining line
+    if (currentLine.trim()) {
+      pageText.push(currentLine.trim());
+    }
+
+    // If no structured text found, try to get raw text
+    if (pageText.length === 0) {
+      const rawText = textContent.items
+        .map((item) => ('str' in item ? item.str : ''))
+        .join(' ')
+        .trim();
+      
+      if (rawText) {
+        // Split by common separators and create paragraphs
+        const sentences = rawText.split(/([.!?]\s+)/).filter((s) => s.trim());
+        sentences.forEach((sentence) => {
+          if (sentence.trim()) {
+            paragraphs.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: sentence.trim(),
+                    size: 20,
+                  }),
+                ],
+              }),
+            );
+          }
+        });
+      } else {
+        // If still no text, indicate the page might be image-based
+        paragraphs.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: '[This page appears to contain only images or no extractable text]',
+                italics: true,
+                size: 20,
+                color: '808080',
+              }),
+            ],
           }),
-        ],
-      }),
-    );
-    paragraphs.push(new Paragraph({ text: '' })); // Empty line between pages
+        );
+      }
+    } else {
+      // Add extracted text as paragraphs
+      pageText.forEach((line) => {
+        if (line.trim()) {
+          paragraphs.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: line,
+                  size: 20,
+                }),
+              ],
+            }),
+          );
+        }
+      });
+    }
+
+    // Add spacing between pages
+    paragraphs.push(new Paragraph({ text: '' }));
   }
 
   const wordDoc = new Document({

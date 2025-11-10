@@ -6,4 +6,10 @@ import react from '@vitejs/plugin-react'
 // For better indexability, consider using Vercel's ISR or SSR features
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    exclude: ['pdfjs-dist'],
+  },
+  worker: {
+    format: 'es',
+  },
 })
