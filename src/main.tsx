@@ -5,15 +5,23 @@ import { HelmetProvider } from 'react-helmet-async';
 import './index.css';
 import App from './App.tsx';
 import { ConsentProvider } from './context/ConsentContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
+
+createRoot(rootElement).render(
   <StrictMode>
-    <HelmetProvider>
-      <ConsentProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ConsentProvider>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <ConsentProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ConsentProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );

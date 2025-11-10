@@ -1,5 +1,5 @@
 import { AdSlot } from '../components/ads/AdSlot';
-import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
 
 const qrHighlights = [
   {

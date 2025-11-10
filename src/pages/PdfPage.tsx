@@ -1,6 +1,6 @@
 import { AdSlot } from '../components/ads/AdSlot';
 import { PdfWorkspace } from '../features/pdf/components/PdfWorkspace';
-import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
 
 export function PdfPage() {
   const title = generatePageTitle('PDF Toolkit');
