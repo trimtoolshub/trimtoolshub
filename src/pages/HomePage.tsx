@@ -5,49 +5,52 @@ import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from
 const featuredTools = [
   {
     to: '/pdf',
-    title: 'PDF Powerhouse',
-    description: 'Merge, split, compress, sign, watermark, and OCR entirely in your browser.',
-    badge: 'Private-first',
+    title: 'PDF Tools - Merge, Split, Compress & More',
+    description: 'Free PDF tools to merge multiple PDFs, split PDF pages, compress file size, add watermarks, sign documents, extract text with OCR, and convert PDF to Word. All processing happens in your browser for complete privacy.',
+    badge: '100% Private',
   },
   {
     to: '/qr',
-    title: 'QR & vCard Studio',
-    description: 'Generate branded QR codes, batches from CSV, and downloadable contact cards.',
-    badge: 'CSV batching',
-  },
-  {
-    to: '/barcodes',
-    title: 'Barcode Lab',
-    description: 'Create CODE128 & EAN-13 sets with label sheet layouts ready to print.',
-    badge: 'Print-ready PDFs',
+    title: 'QR Code Generator - Create Custom QR Codes',
+    description: 'Generate custom QR codes with your logo, colors, and branding. Create vCard QR codes for contact sharing. Batch generate QR codes from CSV files. Download as PNG, SVG, or PDF.',
+    badge: 'Custom Branding',
   },
   {
     to: '/cad',
-    title: 'CAD Viewers',
-    description: 'Inspect DXF drawings, toggle layers, measure, and export crisp PNG/SVG snapshots.',
-    badge: 'Heavy files welcome',
+    title: 'CAD & SketchUp Tools - Viewers & Converters',
+    description: 'View and inspect DXF CAD files and SketchUp SKP files directly in your browser. Convert between DWG, DXF, and SKP formats. Toggle layers, measure distances, zoom and pan. Export views as PNG or SVG images. No software installation required.',
+    badge: 'Browser-Based',
   },
 ];
 
 export function HomePage() {
-  const title = generatePageTitle('Privacy-first file toolkit');
+  const title = generatePageTitle('Free PDF Tools, QR Code Generator & CAD Viewer');
   const url = generateCanonicalUrl('/');
   const jsonLd = generateJsonLd({
     name: 'TrimToolsHub',
     url: url,
-    description: 'PDF, QR, barcodes, and CAD viewers that run in your browser.',
+    description: 'Free online PDF tools, QR code generator, and CAD/SketchUp viewer and converter. All tools run in your browser with complete privacy.',
   });
 
   return (
     <>
       <SEOHead
         title={title}
-        description="Free, private-by-default PDF tools that run in your browser."
+        description="Free online PDF tools, QR code generator, and CAD/SketchUp viewer and converter. Merge, split, compress PDFs. Generate QR codes. View DXF and SKP files. Convert between DWG, DXF, and SKP formats. All tools run in your browser with complete privacy."
         canonical={url}
         ogImage="/og-default.png"
+        keywords={['PDF tools', 'QR code generator', 'CAD viewer', 'SketchUp viewer', 'DXF viewer', 'DWG to DXF converter', 'DXF to SKP converter', 'SKP to DXF converter', 'PDF merger', 'PDF splitter', 'PDF compressor', 'free online tools', 'privacy-first tools']}
         jsonLd={jsonLd}
       />
       <div className="space-y-16">
+      {/* Slim banner ad above hero */}
+      <div className="w-full">
+        <AdSlot
+          slotId={import.meta.env.VITE_ADSENSE_SLOT_HOME_TOP}
+          className="min-h-[90px] w-full rounded-2xl bg-slate-950/70 p-2"
+          format="auto"
+        />
+      </div>
       <section className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 to-slate-950">
         <div className="relative px-6 py-16 sm:px-12 sm:py-20">
           <div className="absolute inset-0 bg-grid-small opacity-40" />
@@ -55,15 +58,15 @@ export function HomePage() {
           <div className="relative flex flex-col gap-12 lg:flex-row lg:items-center">
             <div className="max-w-xl space-y-6">
               <span className="inline-flex items-center gap-2 rounded-full border border-brand-accent/40 bg-brand-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-brand-accent">
-                Client-side first
+                Simple Tools, Easier Life
               </span>
               <h1 className="text-4xl font-semibold text-white sm:text-5xl">
-                File utilities that respect privacy and still pay the bills.
+                Free PDF Tools, QR Code Generator & CAD/SketchUp Viewer
               </h1>
               <p className="text-lg text-slate-300">
-                TrimToolsHub keeps your PDFs, CAD drawings, and contact batches in the browser by default. Heavy-duty
-                conversions switch to a stateless microservice—perfect for monetizing premium workloads without breaking
-                trust.
+                Powerful tools that make your work easier. No complicated software, no downloads, no hassle. 
+                Edit PDFs, create QR codes, and view CAD files in seconds—all in your browser. 
+                Simple, fast, and completely free. Get things done without the complexity.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Link
@@ -76,20 +79,19 @@ export function HomePage() {
                   to="/cad"
                   className="inline-flex items-center justify-center rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/40 hover:text-white"
                 >
-                  Explore CAD Viewers
+                  View CAD Files
                 </Link>
               </div>
             </div>
             <div className="w-full max-w-md rounded-3xl border border-white/10 bg-slate-950/70 p-6 shadow-xl shadow-black/40 backdrop-blur">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">Monetization</h2>
+              <h2 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">Why Choose TrimToolsHub</h2>
               <p className="mt-4 text-base text-slate-200">
-                Enable consented analytics, blend on-page AdSense, and upsell heavy conversions. Cumulative RPM wins
-                without sacrificing UX:
+                Tools designed to make your life easier:
               </p>
               <ul className="mt-5 space-y-3 text-sm text-slate-300">
-                <li>• Two responsive ad slots per tool page with modal suppression.</li>
-                <li>• GA4 & Meta Pixel shape funnel insights after explicit consent.</li>
-                <li>• Flagged `/convert` endpoints pave the way for paid power users.</li>
+                <li>• <strong>Super Easy:</strong> Just drag, drop, and done. No learning curve, no confusion.</li>
+                <li>• <strong>Instant Access:</strong> Start using tools immediately—no sign-ups or downloads required.</li>
+                <li>• <strong>100% Free:</strong> All essential features are free forever, no hidden costs or limits.</li>
               </ul>
             </div>
           </div>
@@ -123,20 +125,20 @@ export function HomePage() {
 
       <section className="grid gap-6 lg:grid-cols-[2fr,1fr]">
         <div className="rounded-3xl border border-white/10 bg-slate-900/60 p-8">
-          <h2 className="text-xl font-semibold text-white">Heavy conversions, optional revenue stream</h2>
+          <h2 className="text-xl font-semibold text-white">Professional Tools Made Simple</h2>
           <p className="mt-3 text-sm text-slate-300">
-            Keep DXF and PDF workflows snappy with client-side WebAssembly, then upsell DWG/SKP conversions when users
-            hit locked formats. Conversion jobs run statelessly with presigned URLs—perfect for usage-based pricing or
-            gating behind higher-intent funnels.
+            Whether you're a student, professional, or business owner, our tools simplify your daily tasks. 
+            Work with PDFs, create QR codes, and handle CAD files effortlessly—all without installing anything. 
+            Just open your browser and get things done faster.
           </p>
           <div className="mt-6 grid gap-4 text-sm text-slate-200 sm:grid-cols-2">
             <div className="rounded-2xl border border-brand-accent/20 bg-brand-accent/10 p-4">
-              <p className="font-semibold text-brand-accent">DWG ⇢ DXF/SVG/PNG</p>
-              <p className="mt-2 text-slate-300">Queue jobs through `/convert` when users need locked-down AutoCAD exports.</p>
+              <p className="font-semibold text-brand-accent">PDF Tools</p>
+              <p className="mt-2 text-slate-300">Merge, split, compress, watermark, sign, and convert PDFs. Extract text with OCR. Convert PDF to Word format.</p>
             </div>
             <div className="rounded-2xl border border-brand-accent/20 bg-brand-accent/10 p-4">
-              <p className="font-semibold text-brand-accent">SKP ⇢ glTF</p>
-              <p className="mt-2 text-slate-300">Hook into licensed converters later; for v1 guide users to OBJ/DAE uploads.</p>
+              <p className="font-semibold text-brand-accent">CAD & SketchUp Tools</p>
+              <p className="mt-2 text-slate-300">View DXF and SKP files in your browser. Convert between DWG, DXF, and SKP formats. Toggle layers, measure distances, and export views as images.</p>
             </div>
           </div>
         </div>

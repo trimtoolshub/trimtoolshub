@@ -3,33 +3,35 @@ import { PdfWorkspace } from '../features/pdf/components/PdfWorkspace';
 import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
 
 export function PdfPage() {
-  const title = generatePageTitle('PDF Toolkit');
+  const title = generatePageTitle('Free PDF Tools - Merge, Split, Compress & More');
   const url = generateCanonicalUrl('/pdf');
   const jsonLd = generateJsonLd({
-    name: 'PDF Toolkit',
+    name: 'PDF Tools',
     url: url,
-    description: 'Merge, split, compress, watermark and OCR PDFs in your browser.',
+    description: 'Free online PDF tools to merge, split, compress, watermark, sign, OCR, and convert PDFs. All processing happens in your browser.',
   });
 
   return (
     <>
       <SEOHead
         title={title}
-        description="Free, private-by-default PDF tools that run in your browser."
+        description="Free online PDF tools to merge multiple PDFs, split PDF pages, compress file size, add watermarks, sign documents, extract text with OCR, and convert PDF to Word. All processing happens in your browser for complete privacy."
         canonical={url}
         ogImage="/og-default.png"
+        keywords={['PDF merger', 'PDF splitter', 'PDF compressor', 'PDF watermark', 'PDF signer', 'PDF OCR', 'PDF to Word', 'free PDF tools', 'online PDF editor']}
         jsonLd={jsonLd}
       />
       <div className="space-y-10">
       <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
         <div className="flex flex-col gap-4">
-          <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">PDF Toolkit</span>
+          <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">PDF Tools</span>
           <h1 className="text-3xl font-semibold text-white sm:text-4xl">
-            Enterprise-grade PDF tools, running right in your browser.
+            Free PDF Tools - Merge, Split, Compress & More
           </h1>
           <p className="max-w-3xl text-base text-slate-300">
-            Merge, split, extract, rotate, compress, and convert without uploading sensitive documents. Heavy workloads
-            stay private—and when users need server-side conversions, you can upsell without interrupting their flow.
+            Use our free online PDF tools to merge multiple PDFs into one, split PDF pages, compress file size, add watermarks, 
+            sign documents, extract text with OCR, and convert PDF to Word format. All processing happens entirely in your 
+            browser—your files never leave your device, ensuring complete privacy and security.
           </p>
         </div>
         <AdSlot

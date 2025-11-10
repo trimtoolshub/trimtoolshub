@@ -3,45 +3,47 @@ import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from
 
 const qrHighlights = [
   {
-    title: 'Brand-forward QR codes',
-    description: 'Custom colors, gradients, and center logos with accessible contrast checks.',
+    title: 'Custom QR Codes with Logo',
+    description: 'Create branded QR codes with your logo, custom colors, and gradients. Adjust error correction levels and ensure accessible contrast for better scanning.',
   },
   {
-    title: 'vCard wizard',
-    description: 'Guided form with validation, newline sanitization, and instant preview.',
+    title: 'vCard QR Code Generator',
+    description: 'Generate vCard QR codes for easy contact sharing. Add name, phone, email, website, and more. Perfect for business cards and networking events.',
   },
   {
-    title: 'Batch CSV mode',
-    description: 'Drop in spreadsheets, preview rows, and export label-ready PDFs.',
+    title: 'Batch QR Code Generation',
+    description: 'Upload a CSV file to generate multiple QR codes at once. Perfect for events, marketing campaigns, and product labeling. Export as PNG, SVG, or PDF.',
   },
 ];
 
 export function QrPage() {
-  const title = generatePageTitle('QR & vCard Studio');
+  const title = generatePageTitle('Free QR Code Generator - Create Custom QR Codes');
   const url = generateCanonicalUrl('/qr');
   const jsonLd = generateJsonLd({
-    name: 'QR & vCard Studio',
+    name: 'QR Code Generator',
     url: url,
-    description: 'Generate branded QR codes, batches from CSV, and downloadable contact cards.',
+    description: 'Free online QR code generator to create custom QR codes with your logo, colors, and branding. Generate vCard QR codes for contact sharing. Batch generate QR codes from CSV files.',
   });
 
   return (
     <>
       <SEOHead
         title={title}
-        description="Generate branded QR codes, batches from CSV, and downloadable contact cards."
+        description="Free online QR code generator to create custom QR codes with your logo, colors, and branding. Generate vCard QR codes for contact sharing. Batch generate QR codes from CSV files. Download as PNG, SVG, or PDF."
         canonical={url}
         ogImage="/og-default.png"
+        keywords={['QR code generator', 'QR code creator', 'custom QR code', 'vCard QR code', 'QR code with logo', 'batch QR code', 'free QR code generator', 'online QR code']}
         jsonLd={jsonLd}
       />
       <div className="space-y-12">
       <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
         <div className="flex flex-col gap-4">
-          <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">QR & vCard</span>
-          <h1 className="text-3xl font-semibold text-white sm:text-4xl">Make every scan measurable and monetizable.</h1>
+          <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">QR Code Generator</span>
+          <h1 className="text-3xl font-semibold text-white sm:text-4xl">Free QR Code Generator - Create Custom QR Codes</h1>
           <p className="max-w-3xl text-base text-slate-300">
-            CSV batching, branded QR templates, and analytics hooks give marketers high lifetime value. Tie campaign
-            launches to contextual ad slots and surface premium barcode bundles for cross-sell.
+            Create custom QR codes with your logo, colors, and branding. Generate vCard QR codes for contact sharing. 
+            Batch generate QR codes from CSV files for events and marketing campaigns. Download as PNG, SVG, or PDF. 
+            All QR code generation happens in your browser—completely free and private.
           </p>
         </div>
         <AdSlot
@@ -61,11 +63,12 @@ export function QrPage() {
       </section>
 
       <section className="rounded-3xl border border-brand-accent/30 bg-brand-accent/10 p-8 text-sm text-slate-200">
-        <h2 className="text-xl font-semibold text-white">Next steps</h2>
+        <h2 className="text-xl font-semibold text-white">How to Use Our QR Code Generator</h2>
         <ul className="mt-4 list-inside list-disc space-y-2">
-          <li>Wire CSV parsing with PapaParse and parallel generation workers.</li>
-          <li>Export PNG/SVG with configurable margins, ECC, and palette validation.</li>
-          <li>Emit GA4 events for template selections to inform pricing experiments.</li>
+          <li><strong>Create Custom QR Codes:</strong> Enter your URL, text, or contact information. Customize colors, add your logo, and adjust error correction levels.</li>
+          <li><strong>Generate vCard QR Codes:</strong> Fill in contact details to create a vCard QR code that can be scanned to save contact information directly to a phone.</li>
+          <li><strong>Batch Generate from CSV:</strong> Upload a CSV file with multiple URLs or text entries to generate multiple QR codes at once.</li>
+          <li><strong>Download in Multiple Formats:</strong> Export your QR codes as PNG, SVG, or PDF files for use in print or digital materials.</li>
         </ul>
       </section>
     </div>

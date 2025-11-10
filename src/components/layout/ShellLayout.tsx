@@ -36,9 +36,7 @@ export function ShellLayout() {
       <header className="sticky top-0 z-40 border-b border-white/5 bg-slate-950/70 backdrop-blur">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6 px-4 py-4">
           <NavLink to="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight text-white">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-brand-primary/20 text-brand-accent">
-              T
-            </span>
+            <img src="/tth-logo.png" alt="TrimToolsHub" className="h-9 w-9 rounded-2xl object-contain" />
             TrimToolsHub
           </NavLink>
           <nav className="hidden items-center gap-2 md:flex">
