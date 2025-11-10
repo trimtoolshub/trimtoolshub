@@ -71,7 +71,7 @@ function setupGoogleAnalytics(measurementId: string) {
   w.gtag =
     w.gtag ||
     function gtag(...args: unknown[]) {
-      w.dataLayer.push(args);
+      w.dataLayer?.push(args);
     };
 
   w.gtag('js', new Date());
@@ -93,7 +93,7 @@ function setupMetaPixel(pixelId: string) {
     if (fbq.callMethod) {
       fbq.callMethod(...(args as unknown[]));
     } else {
-      fbq.queue.push(args);
+      fbq.queue?.push(args);
     }
   }) as FbqFunction;
 

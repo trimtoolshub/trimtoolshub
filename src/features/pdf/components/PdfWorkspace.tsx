@@ -59,7 +59,7 @@ export function PdfWorkspace() {
     (async () => {
       for (const entry of pending) {
         try {
-          const bytes = await entry.file.arrayBuffer();
+          const bytes = (await entry.file.arrayBuffer()) as ArrayBuffer;
           const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
           if (!cancelled) {
             helpers.updateFileMeta(entry.id, doc.getPageCount());
@@ -351,8 +351,6 @@ function WorkspaceControls({
       </div>
     );
   }
-
-  const requiresSinglePdf = ['split', 'extract', 'rotate', 'compress'].includes(activeOperation);
 
   return (
     <div className="space-y-5">

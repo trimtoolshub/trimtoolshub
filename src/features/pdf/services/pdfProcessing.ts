@@ -1,4 +1,4 @@
-import { PDFDocument, degrees } from 'pdf-lib';
+import { PDFDocument, degrees, rgb } from 'pdf-lib';
 import { parseRangeExpression } from '../utils/range';
 
 export interface PdfMergeResult {
@@ -14,14 +14,14 @@ export async function mergePdfs(files: File[]): Promise<PdfMergeResult> {
   const merged = await PDFDocument.create();
 
   for (const file of files) {
-    const bytes = await file.arrayBuffer();
+    const bytes = (await file.arrayBuffer()) as ArrayBuffer;
     const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
     const copiedPages = await merged.copyPages(doc, doc.getPageIndices());
     copiedPages.forEach((page) => merged.addPage(page));
   }
 
   const mergedBytes = await merged.save({ useObjectStreams: true });
-  const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+  const blob = new Blob([mergedBytes.buffer], { type: 'application/pdf' });
 
   return {
     blob,
@@ -34,7 +34,7 @@ export async function extractPageRanges(file: File, rangeExpression: string): Pr
     throw new Error('Enter a range before extracting pages.');
   }
 
-  const bytes = await file.arrayBuffer();
+  const bytes = (await file.arrayBuffer()) as ArrayBuffer;
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
   const ranges = parseRangeExpression(rangeExpression, doc.getPageCount());
   if (!ranges.length) {
@@ -48,7 +48,7 @@ export async function extractPageRanges(file: File, rangeExpression: string): Pr
 
   const resultBytes = await result.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-extract.pdf`,
   };
 }
@@ -59,7 +59,7 @@ export interface SplitPdfResult {
 }
 
 export async function splitPdf(file: File): Promise<SplitPdfResult[]> {
-  const bytes = await file.arrayBuffer();
+  const bytes = (await file.arrayBuffer()) as ArrayBuffer;
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
   const totalPages = doc.getPageCount();
 
@@ -72,7 +72,7 @@ export async function splitPdf(file: File): Promise<SplitPdfResult[]> {
     const pageBytes = await result.save({ useObjectStreams: true });
     results.push({
       filename: `${file.name.replace(/\.pdf$/i, '')}-page-${index + 1}.pdf`,
-      blob: new Blob([pageBytes], { type: 'application/pdf' }),
+      blob: new Blob([pageBytes.buffer], { type: 'application/pdf' }),
     });
   }
 
@@ -84,7 +84,7 @@ export async function rotatePdf(file: File, rotationMap: Record<number, 0 | 90 |
     throw new Error('Select at least one page to rotate.');
   }
 
-  const bytes = await file.arrayBuffer();
+  const bytes = (await file.arrayBuffer()) as ArrayBuffer;
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
 
   doc.getPages().forEach((page, index) => {
@@ -96,7 +96,7 @@ export async function rotatePdf(file: File, rotationMap: Record<number, 0 | 90 |
 
   const resultBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-rotated.pdf`,
   };
 }
@@ -113,7 +113,7 @@ export async function imagesToPdf(files: File[]): Promise<PdfMergeResult> {
       throw new Error('Only image files are supported in the image to PDF workflow.');
     }
 
-    const bytes = await file.arrayBuffer();
+    const bytes = (await file.arrayBuffer()) as ArrayBuffer;
     let embedded;
     if (file.type === 'image/png') {
       embedded = await pdfDoc.embedPng(bytes);
@@ -132,17 +132,17 @@ export async function imagesToPdf(files: File[]): Promise<PdfMergeResult> {
 
   const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([pdfBytes], { type: 'application/pdf' }),
+    blob: new Blob([pdfBytes.buffer], { type: 'application/pdf' }),
     filename: `images-${new Date().toISOString().replace(/[:.]/g, '-')}.pdf`,
   };
 }
 
 export async function compressPdf(file: File): Promise<PdfMergeResult> {
-  const bytes = await file.arrayBuffer();
+  const bytes = (await file.arrayBuffer()) as ArrayBuffer;
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
   const compressedBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([compressedBytes], { type: 'application/pdf' }),
+    blob: new Blob([compressedBytes.buffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-compressed.pdf`,
   };
 }
@@ -158,7 +158,7 @@ export interface WatermarkOptions {
 }
 
 export async function watermarkPdf(file: File, options: WatermarkOptions): Promise<PdfMergeResult> {
-  const bytes = await file.arrayBuffer();
+  const bytes = (await file.arrayBuffer()) as ArrayBuffer;
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
   const pages = doc.getPages();
 
@@ -174,10 +174,10 @@ export async function watermarkPdf(file: File, options: WatermarkOptions): Promi
         size: options.fontSize ?? 50,
         opacity,
         rotate: degrees(angle),
-        color: { r: 0.5, g: 0.5, b: 0.5 },
+        color: rgb(0.5, 0.5, 0.5),
       });
     } else if (options.type === 'image' && options.imageFile) {
-      const imageBytes = await options.imageFile.arrayBuffer();
+      const imageBytes = (await options.imageFile.arrayBuffer()) as ArrayBuffer;
       let embedded;
       if (options.imageFile.type === 'image/png') {
         embedded = await doc.embedPng(imageBytes);
@@ -202,7 +202,7 @@ export async function watermarkPdf(file: File, options: WatermarkOptions): Promi
 
   const resultBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-watermarked.pdf`,
   };
 }
@@ -220,7 +220,7 @@ export async function signPdf(file: File, signatures: SignatureOptions[]): Promi
     throw new Error('Add at least one signature.');
   }
 
-  const bytes = await file.arrayBuffer();
+  const bytes = (await file.arrayBuffer()) as ArrayBuffer;
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
   const pages = doc.getPages();
 
@@ -240,12 +240,13 @@ export async function signPdf(file: File, signatures: SignatureOptions[]): Promi
         x,
         y,
         size: 20,
-        color: { r: 0, g: 0, b: 0 },
+        color: rgb(0, 0, 0),
       });
     } else if (sig.type === 'image' && sig.signatureData) {
       try {
-        const imageBytes = Uint8Array.from(atob(sig.signatureData.split(',')[1] || sig.signatureData), (c) => c.charCodeAt(0));
-        const embedded = await doc.embedPng(imageBytes);
+        const base64Data = sig.signatureData.split(',')[1] || sig.signatureData;
+        const imageBytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+        const embedded = await doc.embedPng(imageBytes.buffer);
         const { width: imgWidth, height: imgHeight } = embedded.scale(0.5);
 
         page.drawImage(embedded, {
@@ -262,7 +263,7 @@ export async function signPdf(file: File, signatures: SignatureOptions[]): Promi
 
   const resultBytes = await doc.save({ useObjectStreams: true });
   return {
-    blob: new Blob([resultBytes], { type: 'application/pdf' }),
+    blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
     filename: `${file.name.replace(/\.pdf$/i, '')}-signed.pdf`,
   };
 }
@@ -272,7 +273,7 @@ export async function ocrPdf(file: File, language: string = 'eng'): Promise<PdfM
   const worker = await createWorker(language);
 
   try {
-    const bytes = await file.arrayBuffer();
+    const bytes = (await file.arrayBuffer()) as ArrayBuffer;
     const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
     const pages = doc.getPages();
 
@@ -283,19 +284,19 @@ export async function ocrPdf(file: File, language: string = 'eng'): Promise<PdfM
       const page = pages[i];
       // Convert PDF page to image for OCR (simplified - in production you'd use pdf2pic or similar)
       // For now, we'll add a text annotation indicating OCR was performed
-      const { width, height } = page.getSize();
+      const { height } = page.getSize();
       page.drawText(`OCR Processed (${language})`, {
         x: 10,
         y: height - 20,
         size: 10,
-        color: { r: 0, g: 0, b: 1 },
+        color: rgb(0, 0, 1),
         opacity: 0.5,
       });
     }
 
     const resultBytes = await doc.save({ useObjectStreams: true });
     return {
-      blob: new Blob([resultBytes], { type: 'application/pdf' }),
+      blob: new Blob([resultBytes.buffer], { type: 'application/pdf' }),
       filename: `${file.name.replace(/\.pdf$/i, '')}-ocr.pdf`,
     };
   } finally {
@@ -309,12 +310,13 @@ export interface WordResult {
 }
 
 export async function pdfToWord(file: File): Promise<WordResult> {
-  const { Document, Packer, Paragraph, TextRun } = await import('docx');
-  const bytes = await file.arrayBuffer();
+  const docxModule = await import('docx');
+  const { Document, Packer, Paragraph, TextRun } = docxModule;
+  const bytes = (await file.arrayBuffer()) as ArrayBuffer;
   const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
   const pages = doc.getPages();
 
-  const paragraphs: Paragraph[] = [];
+  const paragraphs: InstanceType<typeof Paragraph>[] = [];
 
   // Extract text from each page (simplified - pdf-lib doesn't extract text directly)
   // In production, you'd use pdf.js or pdf-parse for better text extraction
