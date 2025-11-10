@@ -25,3 +25,8 @@ createRoot(rootElement).render(
     </ErrorBoundary>
   </StrictMode>,
 );
+
+// Dispatch event for prerender plugin
+if (typeof document !== 'undefined') {
+  document.dispatchEvent(new Event('render-event'));
+}
