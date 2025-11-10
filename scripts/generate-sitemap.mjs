@@ -41,7 +41,12 @@ const routes = [
   '/pdf',
   '/qr',
   '/barcodes',
-  '/cad'
+  '/cad',
+  '/images',
+  '/dates',
+  '/blog',
+  '/privacy',
+  '/terms'
 ];
 
 // Remove duplicates using Set
@@ -67,6 +72,16 @@ ${readyRoutes.map(route => {
     lastmod = getFileModTime('./src/pages/BarcodesPage.tsx');
   } else if (route === '/cad') {
     lastmod = getFileModTime('./src/pages/CadPage.tsx');
+  } else if (route === '/images') {
+    lastmod = getFileModTime('./src/pages/ImagesPage.tsx');
+  } else if (route === '/dates') {
+    lastmod = getFileModTime('./src/pages/DateToolsPage.tsx');
+  } else if (route === '/blog') {
+    lastmod = getFileModTime('./src/pages/BlogPage.tsx');
+  } else if (route === '/privacy') {
+    lastmod = getFileModTime('./src/pages/PrivacyPage.tsx');
+  } else if (route === '/terms') {
+    lastmod = getFileModTime('./src/pages/TermsPage.tsx');
   } else {
     // Fallback: use current date
     lastmod = new Date().toISOString().split('T')[0];

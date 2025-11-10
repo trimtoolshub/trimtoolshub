@@ -19,10 +19,16 @@ export function PrivacyPage() {
         keywords={['privacy policy', 'data protection', 'privacy', 'GDPR', 'user privacy']}
         jsonLd={jsonLd}
       />
-      <div className="mx-auto max-w-4xl space-y-8">
-        <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10">
-          <h1 className="text-4xl font-semibold text-white">Privacy Policy</h1>
-          <p className="mt-4 text-slate-300">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      <div className="space-y-10">
+        <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
+          <div className="flex flex-col gap-4">
+            <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">Privacy Policy</span>
+            <h1 className="text-3xl font-semibold text-white sm:text-4xl">Privacy Policy</h1>
+            <p className="max-w-3xl text-base text-slate-300">
+              Learn how we protect your privacy and handle your data. All file processing happens in your browser—your files never leave your device.
+            </p>
+            <p className="text-sm text-slate-400">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          </div>
         </header>
 
         <section className="space-y-6 rounded-3xl border border-white/10 bg-slate-900/60 p-8">

@@ -1,26 +1,8 @@
 import { useState } from 'react';
 import { AdSlot } from '../components/ads/AdSlot';
+import { RelatedTools } from '../components/related/RelatedTools';
 import { ImageWorkspace } from '../features/images/components/ImageWorkspace';
-import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
-
-const imageFeatures = [
-  {
-    title: 'Format Conversion',
-    description: 'Convert between JPG, PNG, WEBP, SVG, BMP, TIFF, and more. Transform images to any format you need with a single click.',
-  },
-  {
-    title: 'Image Compression',
-    description: 'Compress images to reduce file size while maintaining quality. Perfect for web optimization and faster loading times.',
-  },
-  {
-    title: 'Background Remover',
-    description: 'Remove background from images automatically using advanced edge detection and flood fill algorithms. Perfect for product photos and portraits.',
-  },
-  {
-    title: 'SVG & Vector Conversion',
-    description: 'Convert images to SVG format or create vectorized versions with color quantization. Perfect for scalable graphics and print materials.',
-  },
-];
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 export function ImagesPage() {
   const title = generatePageTitle('Free Image Converter - Convert, Compress & Remove Background');
@@ -146,40 +128,34 @@ export function ImagesPage() {
         jsonLd={jsonLd}
       />
       <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-      <div className="space-y-12">
-        <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
-          <div className="flex flex-col gap-4">
-            <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">Image Converter</span>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">Free Image Converter - Convert, Compress & Remove Background</h1>
-            <p className="max-w-3xl text-base text-slate-300">
-              Convert between JPG, PNG, WEBP, SVG, and more. Compress images to reduce file size, remove backgrounds automatically using advanced algorithms, 
-              and convert to SVG or vector format. Batch process multiple images at once. All processing happens in your browser—your files never leave your device.
-            </p>
-          </div>
-          <AdSlot
-            slotId={import.meta.env.VITE_ADSENSE_SLOT_IMAGES_TOP}
-            className="mt-6 min-h-[90px] rounded-2xl bg-slate-950/70 p-4"
-            format="auto"
-          />
-        </header>
+      <div className="space-y-10">
+      <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
+        <div className="flex flex-col gap-4">
+          <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">Image Converter</span>
+          <h1 className="text-3xl font-semibold text-white sm:text-4xl">Free Image Converter - Convert, Compress & Remove Background</h1>
+          <p className="max-w-3xl text-base text-slate-300">
+            Convert images between popular formats like JPG, PNG, WebP, SVG, and more. Compress images to reduce file size. 
+            Remove backgrounds automatically with advanced algorithms. Convert to SVG or vector format for scalable graphics. 
+            All image processing happens in your browser—completely free and private.
+          </p>
+        </div>
+        <AdSlot
+          slotId={import.meta.env.VITE_ADSENSE_SLOT_IMAGES_TOP}
+          className="mt-6 min-h-[90px] rounded-2xl bg-slate-950/70 p-4"
+          format="auto"
+        />
+      </header>
 
-        <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {imageFeatures.map((feature) => (
-            <div key={feature.title} className="rounded-3xl border border-white/10 bg-slate-900/50 p-6">
-              <h2 className="text-lg font-semibold text-white">{feature.title}</h2>
-              <p className="mt-2 text-sm text-slate-300">{feature.description}</p>
-            </div>
-          ))}
-        </section>
+      <section className="rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-lg shadow-black/30">
+        <ImageWorkspace />
+      </section>
 
-        <section className="rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-lg shadow-black/30">
-          <ImageWorkspace />
-        </section>
+      <FaqSection />
 
-        <FaqSection />
+      <HowToSection />
 
-        <HowToSection />
-      </div>
+      <RelatedTools currentPath="/images" />
+    </div>
     </>
   );
 }

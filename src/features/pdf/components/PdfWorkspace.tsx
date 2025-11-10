@@ -4,6 +4,9 @@ import { usePdfWorkspace } from '../hooks/usePdfWorkspace';
 import { PdfFileDropzone } from './PdfFileDropzone';
 import { PdfFileList } from './PdfFileList';
 import { PdfOperationsPanel } from './PdfOperationsPanel';
+import { RateLimitBanner } from '../../../components/rate-limit/RateLimitBanner';
+import { ShareableResult } from '../../../components/share/ShareableResult';
+import { trackOperation, canPerformOperation } from '../../../lib/usageTracking';
 import { downloadBlob, downloadBatchAsZip } from '../../../lib/download';
 import {
   extractPageRanges,
@@ -77,17 +80,29 @@ export function PdfWorkspace() {
     };
   }, [files, helpers]);
 
+  const [lastResult, setLastResult] = useState<{ blob: Blob; filename: string } | null>(null);
+
   const handleProcess = async () => {
     helpers.clearFeedback();
+    
+    // Check rate limit
+    if (!canPerformOperation('pdf')) {
+      helpers.setError('You have reached the free tier limit. Please upgrade to continue processing.');
+      return;
+    }
+
     helpers.startProcessing();
     try {
       let successMessage: string | undefined;
+      let result: { blob: Blob; filename: string } | null = null;
 
       switch (activeOperation) {
         case 'merge': {
-          const result = await mergePdfs(pdfFiles.map((entry) => entry.file));
+          result = await mergePdfs(pdfFiles.map((entry) => entry.file));
           downloadBlob(result.blob, result.filename);
           successMessage = 'Merged PDF ready to download.';
+          // Track usage
+          trackOperation('pdf', 'merge');
           break;
         }
         case 'split': {
@@ -103,15 +118,19 @@ export function PdfWorkspace() {
             results.forEach(({ blob, filename }) => downloadBlob(blob, filename));
             successMessage = `Exported ${results.length} separate PDF${results.length === 1 ? '' : 's'}.`;
           }
+          // Track usage
+          trackOperation('pdf', 'split');
           break;
         }
         case 'extract': {
           if (!selectedFile) {
             throw new Error('Select a PDF to extract from.');
           }
-          const result = await extractPageRanges(selectedFile.file, rangeExpression);
+          result = await extractPageRanges(selectedFile.file, rangeExpression);
           downloadBlob(result.blob, result.filename);
           successMessage = 'Extracted pages saved.';
+          // Track usage
+          trackOperation('pdf', 'extract');
           break;
         }
         case 'rotate': {
@@ -122,36 +141,44 @@ export function PdfWorkspace() {
           if (!rotationEntries.length) {
             throw new Error('Choose at least one page rotation before exporting.');
           }
-          const result = await rotatePdf(selectedFile.file, selectedFile.rotationMap);
+          result = await rotatePdf(selectedFile.file, selectedFile.rotationMap);
           downloadBlob(result.blob, result.filename);
           successMessage = `Rotated ${rotationEntries.length} page${rotationEntries.length === 1 ? '' : 's'}.`;
+          // Track usage
+          trackOperation('pdf', 'rotate');
           break;
         }
         case 'img2pdf': {
-          const result = await imagesToPdf(imageFiles.map((entry) => entry.file));
+          result = await imagesToPdf(imageFiles.map((entry) => entry.file));
           downloadBlob(result.blob, result.filename);
           successMessage = `Images converted to PDF (${imageFiles.length} page${imageFiles.length === 1 ? '' : 's'}).`;
+          // Track usage
+          trackOperation('pdf', 'img2pdf');
           break;
         }
         case 'compress': {
           if (!selectedFile) {
             throw new Error('Select a PDF to compress.');
           }
-          const result = await compressPdf(selectedFile.file, compressPreset);
+          result = await compressPdf(selectedFile.file, compressPreset);
           downloadBlob(result.blob, result.filename);
           const originalSize = selectedFile.size;
           const compressedSize = result.blob.size;
           const reduction = ((originalSize - compressedSize) / originalSize * 100).toFixed(1);
           successMessage = `Compressed (${compressPreset}): ${reduction}% size reduction.`;
+          // Track usage
+          trackOperation('pdf', 'compress');
           break;
         }
         case 'watermark': {
           if (!selectedFile) {
             throw new Error('Select a PDF to watermark.');
           }
-          const result = await watermarkPdf(selectedFile.file, watermarkOptions);
+          result = await watermarkPdf(selectedFile.file, watermarkOptions);
           downloadBlob(result.blob, result.filename);
           successMessage = 'Watermark applied successfully.';
+          // Track usage
+          trackOperation('pdf', 'watermark');
           break;
         }
         case 'sign': {
@@ -161,60 +188,77 @@ export function PdfWorkspace() {
           if (!signatures.length) {
             throw new Error('Add at least one signature before processing.');
           }
-          const result = await signPdf(selectedFile.file, signatures);
+          result = await signPdf(selectedFile.file, signatures);
           downloadBlob(result.blob, result.filename);
           successMessage = `Added ${signatures.length} signature${signatures.length === 1 ? '' : 's'}.`;
+          // Track usage
+          trackOperation('pdf', 'sign');
           break;
         }
         case 'ocr': {
           if (!selectedFile) {
             throw new Error('Select a PDF to process with OCR.');
           }
-          const result = await ocrPdf(selectedFile.file, ocrLanguage);
+          result = await ocrPdf(selectedFile.file, ocrLanguage);
           downloadBlob(result.blob, result.filename);
           successMessage = `OCR processing complete (${ocrLanguage}).`;
+          // Track usage
+          trackOperation('pdf', 'ocr');
           break;
         }
         case 'pdf2word': {
           if (!selectedFile) {
             throw new Error('Select a PDF to convert to Word.');
           }
-          const result = await pdfToWord(selectedFile.file);
+          result = await pdfToWord(selectedFile.file);
           downloadBlob(result.blob, result.filename);
           successMessage = 'PDF converted to Word document.';
+          // Track usage
+          trackOperation('pdf', 'pdf2word');
           break;
         }
         case 'extractImages': {
           if (!selectedFile) {
             throw new Error('Select a PDF to extract images from.');
           }
-          const result = await extractImagesFromPdf(selectedFile.file);
-          if (result.images.length === 0) {
+          const extractResult = await extractImagesFromPdf(selectedFile.file);
+          if (extractResult.images.length === 0) {
             throw new Error('No images found in this PDF.');
           }
-          if (result.images.length > 5) {
+          if (extractResult.images.length > 5) {
             await downloadBatchAsZip(
-              result.images.map((img) => ({ blob: img.blob, filename: img.filename })),
+              extractResult.images.map((img) => ({ blob: img.blob, filename: img.filename })),
               `${selectedFile.name.replace(/\.pdf$/i, '')}-images.zip`,
             );
-            successMessage = `Extracted ${result.images.length} images (bundled as ZIP).`;
+            successMessage = `Extracted ${extractResult.images.length} images (bundled as ZIP).`;
           } else {
-            result.images.forEach((img) => downloadBlob(img.blob, img.filename));
-            successMessage = `Extracted ${result.images.length} image${result.images.length === 1 ? '' : 's'}.`;
+            extractResult.images.forEach((img) => downloadBlob(img.blob, img.filename));
+            successMessage = `Extracted ${extractResult.images.length} image${extractResult.images.length === 1 ? '' : 's'}.`;
           }
+          // Track usage
+          trackOperation('pdf', 'extractImages');
           break;
         }
         case 'pdf2csv': {
           if (!selectedFile) {
             throw new Error('Select a PDF to convert to CSV.');
           }
-          const result = await pdfToCsv(selectedFile.file);
+          result = await pdfToCsv(selectedFile.file);
           downloadBlob(result.blob, result.filename);
           successMessage = 'PDF converted to CSV file.';
+          // Track usage
+          trackOperation('pdf', 'pdf2csv');
           break;
         }
         default:
           throw new Error('Unsupported operation.');
+      }
+
+      // Store result for sharing
+      if (result) {
+        setLastResult(result);
+      } else {
+        setLastResult(null);
       }
 
       helpers.finishProcessing(successMessage);
@@ -223,6 +267,7 @@ export function PdfWorkspace() {
         processingError instanceof Error ? processingError.message : 'Something went wrong while processing the PDF.';
       helpers.setError(message);
       helpers.finishProcessing();
+      setLastResult(null);
     }
   };
 
@@ -333,7 +378,19 @@ export function PdfWorkspace() {
           </div>
           {error ? <p className="mt-3 text-sm text-red-400">{error}</p> : null}
           {successMessage ? <p className="mt-3 text-sm text-emerald-400">{successMessage}</p> : null}
+          {lastResult && (
+            <ShareableResult
+              result={{
+                blob: lastResult.blob,
+                filename: lastResult.filename,
+                type: 'file',
+              }}
+              tool="PDF Tools"
+              operation={activeOperation}
+            />
+          )}
         </div>
+        <RateLimitBanner tool="pdf" />
       </div>
     </div>
   );

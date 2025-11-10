@@ -1,22 +1,8 @@
 import { useState } from 'react';
 import { AdSlot } from '../components/ads/AdSlot';
+import { RelatedTools } from '../components/related/RelatedTools';
 import { QrWorkspace } from '../features/qr/components/QrWorkspace';
-import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
-
-const qrHighlights = [
-  {
-    title: 'Custom QR Codes with Logo',
-    description: 'Create branded QR codes with your logo, custom colors, and gradients. Adjust error correction levels and ensure accessible contrast for better scanning.',
-  },
-  {
-    title: 'vCard QR Code Generator',
-    description: 'Generate vCard QR codes for easy contact sharing. Add name, phone, email, website, and more. Perfect for business cards and networking events.',
-  },
-  {
-    title: 'Batch QR Code Generation',
-    description: 'Upload a CSV file to generate multiple QR codes at once. Perfect for events, marketing campaigns, and product labeling. Export as PNG, SVG, or PDF.',
-  },
-];
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 export function QrPage() {
   const title = generatePageTitle('Free QR Code Generator - Create Custom QR Codes');
@@ -126,7 +112,7 @@ export function QrPage() {
         jsonLd={jsonLd}
       />
       <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-      <div className="space-y-12">
+      <div className="space-y-10">
       <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
         <div className="flex flex-col gap-4">
           <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">QR Code Generator</span>
@@ -144,15 +130,6 @@ export function QrPage() {
         />
       </header>
 
-      <section className="grid gap-6 md:grid-cols-3">
-        {qrHighlights.map((item) => (
-          <div key={item.title} className="rounded-3xl border border-white/10 bg-slate-900/50 p-6">
-            <h2 className="text-lg font-semibold text-white">{item.title}</h2>
-            <p className="mt-2 text-sm text-slate-300">{item.description}</p>
-          </div>
-        ))}
-      </section>
-
       <section className="rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-lg shadow-black/30">
         <QrWorkspace />
       </section>
@@ -160,6 +137,8 @@ export function QrPage() {
       <FaqSection />
 
       <HowToSection />
+
+      <RelatedTools currentPath="/qr" />
     </div>
     </>
   );

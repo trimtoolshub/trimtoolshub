@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { AdSlot } from '../components/ads/AdSlot';
+import { RelatedTools } from '../components/related/RelatedTools';
 import { PdfWorkspace } from '../features/pdf/components/PdfWorkspace';
-import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 export function PdfPage() {
   const title = generatePageTitle('Free PDF Tools - Merge, Split, Compress & More');
@@ -154,6 +155,8 @@ export function PdfPage() {
       <FaqSection />
 
       <HowToSection />
+
+      <RelatedTools currentPath="/pdf" />
     </div>
     </>
   );

@@ -1,12 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { prerender } from 'vite-plugin-prerender'
 
 // https://vite.dev/config/
-// Note: Prerender removed - vite-plugin-prerender has compatibility issues
-// Vercel handles static generation differently. For better indexability,
-// consider using Vercel's ISR or SSR features in the future.
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    prerender({
+      routes: ['/', '/pdf', '/qr', '/barcodes', '/cad', '/images', '/dates', '/blog'],
+      renderer: {
+        renderAfterDocumentEvent: 'render-event',
+        renderAfterTime: 500,
+        maxConcurrentRoutes: 5,
+      },
+    }),
+  ],
   optimizeDeps: {
     exclude: ['pdfjs-dist'],
   },

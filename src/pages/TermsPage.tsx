@@ -19,10 +19,16 @@ export function TermsPage() {
         keywords={['terms of service', 'terms and conditions', 'user agreement', 'legal terms']}
         jsonLd={jsonLd}
       />
-      <div className="mx-auto max-w-4xl space-y-8">
-        <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10">
-          <h1 className="text-4xl font-semibold text-white">Terms of Service</h1>
-          <p className="mt-4 text-slate-300">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      <div className="space-y-10">
+        <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
+          <div className="flex flex-col gap-4">
+            <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">Terms of Service</span>
+            <h1 className="text-3xl font-semibold text-white sm:text-4xl">Terms of Service</h1>
+            <p className="max-w-3xl text-base text-slate-300">
+              Read our terms and conditions for using our free online tools and services. All tools operate entirely in your browser for complete privacy.
+            </p>
+            <p className="text-sm text-slate-400">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          </div>
         </header>
 
         <section className="space-y-6 rounded-3xl border border-white/10 bg-slate-900/60 p-8">

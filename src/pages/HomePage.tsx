@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AdSlot } from '../components/ads/AdSlot';
-import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo.tsx';
+import { RecentlyUsedTools } from '../components/recent/RecentlyUsedTools';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 const featuredTools = [
   {
@@ -136,6 +137,9 @@ export function HomePage() {
             </Link>
           ))}
         </section>
+
+        {/* Recently Used Tools */}
+        <RecentlyUsedTools />
 
         {/* Middle Content Section with Sidebar Ad */}
         <section className="grid gap-6 lg:grid-cols-[2fr,1fr]">

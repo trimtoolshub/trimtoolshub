@@ -56,7 +56,7 @@ export const SEOHead = ({
   canonical,
   jsonLd,
   keywords = [],
-  ogImage = `${siteUrl}/og-image.jpg`,
+  ogImage = `${siteUrl}/og-default.png`,
 }: SEOHeadProps) => {
   const pageTitle = generatePageTitle(title);
   const metaDescription = generateMetaDescription(description);
