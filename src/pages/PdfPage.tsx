@@ -1,9 +1,26 @@
 import { AdSlot } from '../components/ads/AdSlot';
 import { PdfWorkspace } from '../features/pdf/components/PdfWorkspace';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 export function PdfPage() {
+  const title = generatePageTitle('PDF Toolkit');
+  const url = generateCanonicalUrl('/pdf');
+  const jsonLd = generateJsonLd({
+    name: 'PDF Toolkit',
+    url: url,
+    description: 'Merge, split, compress, watermark and OCR PDFs in your browser.',
+  });
+
   return (
-    <div className="space-y-10">
+    <>
+      <SEOHead
+        title={title}
+        description="Free, private-by-default PDF tools that run in your browser."
+        canonical={url}
+        ogImage="/og-default.png"
+        jsonLd={jsonLd}
+      />
+      <div className="space-y-10">
       <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
         <div className="flex flex-col gap-4">
           <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">PDF Toolkit</span>
@@ -26,6 +43,7 @@ export function PdfPage() {
         <PdfWorkspace />
       </section>
     </div>
+    </>
   );
 }
 

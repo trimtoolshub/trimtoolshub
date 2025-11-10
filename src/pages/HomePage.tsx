@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AdSlot } from '../components/ads/AdSlot';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 const featuredTools = [
   {
@@ -29,8 +30,24 @@ const featuredTools = [
 ];
 
 export function HomePage() {
+  const title = generatePageTitle('Privacy-first file toolkit');
+  const url = generateCanonicalUrl('/');
+  const jsonLd = generateJsonLd({
+    name: 'TrimToolsHub',
+    url: url,
+    description: 'PDF, QR, barcodes, and CAD viewers that run in your browser.',
+  });
+
   return (
-    <div className="space-y-16">
+    <>
+      <SEOHead
+        title={title}
+        description="Free, private-by-default PDF tools that run in your browser."
+        canonical={url}
+        ogImage="/og-default.png"
+        jsonLd={jsonLd}
+      />
+      <div className="space-y-16">
       <section className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 to-slate-950">
         <div className="relative px-6 py-16 sm:px-12 sm:py-20">
           <div className="absolute inset-0 bg-grid-small opacity-40" />
@@ -133,6 +150,7 @@ export function HomePage() {
         </div>
       </section>
     </div>
+    </>
   );
 }
 

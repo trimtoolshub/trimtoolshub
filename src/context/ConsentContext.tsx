@@ -49,11 +49,33 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
 
   const accept = useCallback(() => {
     setStatus('accepted');
+    if (typeof window !== 'undefined') {
+      const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+      if (w.gtag) {
+        w.gtag('consent', 'update', {
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted',
+          analytics_storage: 'granted',
+        });
+      }
+    }
     persist('accepted');
   }, [persist]);
 
   const decline = useCallback(() => {
     setStatus('declined');
+    if (typeof window !== 'undefined') {
+      const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+      if (w.gtag) {
+        w.gtag('consent', 'update', {
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          analytics_storage: 'denied',
+        });
+      }
+    }
     persist('declined');
   }, [persist]);
 

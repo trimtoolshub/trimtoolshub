@@ -1,4 +1,5 @@
 import { AdSlot } from '../components/ads/AdSlot';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 const cadMilestones = [
   {
@@ -16,8 +17,24 @@ const cadMilestones = [
 ];
 
 export function CadPage() {
+  const title = generatePageTitle('CAD Viewers');
+  const url = generateCanonicalUrl('/cad');
+  const jsonLd = generateJsonLd({
+    name: 'CAD Viewers',
+    url: url,
+    description: 'Inspect DXF drawings, toggle layers, measure, and export crisp PNG/SVG snapshots.',
+  });
+
   return (
-    <div className="space-y-12">
+    <>
+      <SEOHead
+        title={title}
+        description="Inspect DXF drawings, toggle layers, measure, and export crisp PNG/SVG snapshots."
+        canonical={url}
+        ogImage="/og-default.png"
+        jsonLd={jsonLd}
+      />
+      <div className="space-y-12">
       <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
         <div className="flex flex-col gap-4">
           <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">CAD Viewers</span>
@@ -52,6 +69,7 @@ export function CadPage() {
         </ul>
       </section>
     </div>
+    </>
   );
 }
 

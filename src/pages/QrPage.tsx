@@ -1,4 +1,5 @@
 import { AdSlot } from '../components/ads/AdSlot';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 const qrHighlights = [
   {
@@ -16,8 +17,24 @@ const qrHighlights = [
 ];
 
 export function QrPage() {
+  const title = generatePageTitle('QR & vCard Studio');
+  const url = generateCanonicalUrl('/qr');
+  const jsonLd = generateJsonLd({
+    name: 'QR & vCard Studio',
+    url: url,
+    description: 'Generate branded QR codes, batches from CSV, and downloadable contact cards.',
+  });
+
   return (
-    <div className="space-y-12">
+    <>
+      <SEOHead
+        title={title}
+        description="Generate branded QR codes, batches from CSV, and downloadable contact cards."
+        canonical={url}
+        ogImage="/og-default.png"
+        jsonLd={jsonLd}
+      />
+      <div className="space-y-12">
       <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
         <div className="flex flex-col gap-4">
           <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">QR & vCard</span>
@@ -52,6 +69,7 @@ export function QrPage() {
         </ul>
       </section>
     </div>
+    </>
   );
 }
 

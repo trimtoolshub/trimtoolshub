@@ -1,9 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-// Import the registry data directly
-import { toolsRegistry } from '../src/tools/registryData.js';
-import { blogPosts } from '../src/data/blogPosts.js';
+// TypeScript app routes - no need to import registry data
 
 const baseUrl = 'https://www.trimtoolshub.com';
 
@@ -37,31 +35,20 @@ const getMostRecentModTime = (filePaths) => {
   return mostRecent.toISOString().split('T')[0];
 };
 
-// Create routes array and remove duplicates
+// Create routes array matching TypeScript app routes
 const routes = [
   '/',
-  '/tools',
-  '/blog',
-  '/docs',
-  '/terms',
-  ...toolsRegistry.map(tool => `/tools/${tool.slug}`),
-  ...blogPosts.map(post => `/blog/${post.slug}`)
+  '/pdf',
+  '/qr',
+  '/barcodes',
+  '/cad'
 ];
 
 // Remove duplicates using Set
 const uniqueRoutes = [...new Set(routes)];
 
-// Filter out any routes that might not be ready (placeholder tools)
-const readyRoutes = uniqueRoutes.filter(route => {
-  // Skip any tools that might be placeholders or not fully implemented
-  const toolSlug = route.replace('/tools/', '');
-  if (route.startsWith('/tools/') && toolSlug) {
-    // Check if this is a real tool by looking at the registry
-    const tool = toolsRegistry.find(t => t.slug === toolSlug);
-    return tool && tool.name; // Only include tools with proper names
-  }
-  return true;
-});
+// All routes are ready (TypeScript app routes)
+const readyRoutes = uniqueRoutes;
 
 // Generate sitemap with proper lastmod timestamps
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -70,36 +57,18 @@ ${readyRoutes.map(route => {
   // Get appropriate lastmod based on route type
   let lastmod;
   if (route === '/') {
-    // Homepage: check multiple files that affect it
-    lastmod = getMostRecentModTime([
-      './src/pages/Home.jsx',
-      './src/components/Header.jsx',
-      './src/components/Footer.jsx',
-      './src/styles/home-modern.css'
-    ]);
-  } else if (route === '/tools') {
-    // Tools page: check tools-related files
-    lastmod = getMostRecentModTime([
-      './src/pages/AllTools.jsx',
-      './src/tools/registryData.js',
-      './src/tools/registryComponents.jsx'
-    ]);
-  } else if (route.startsWith('/tools/')) {
-    // Tool pages: check individual tool files
-    const toolSlug = route.replace('/tools/', '');
-    const toolName = toolSlug.charAt(0).toUpperCase() + toolSlug.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-    lastmod = getFileModTime(`./src/tools/${toolSlug}/${toolName}.jsx`);
-  } else if (route.startsWith('/blog/')) {
-    // Blog posts: check blog data file
-    lastmod = getFileModTime('./src/data/blogPosts.js');
-  } else if (route === '/blog') {
-    // Blog hub: check blog-related files
-    lastmod = getMostRecentModTime([
-      './src/pages/Blog.jsx',
-      './src/data/blogPosts.js'
-    ]);
+    // Homepage: check TypeScript page
+    lastmod = getFileModTime('./src/pages/HomePage.tsx');
+  } else if (route === '/pdf') {
+    lastmod = getFileModTime('./src/pages/PdfPage.tsx');
+  } else if (route === '/qr') {
+    lastmod = getFileModTime('./src/pages/QrPage.tsx');
+  } else if (route === '/barcodes') {
+    lastmod = getFileModTime('./src/pages/BarcodesPage.tsx');
+  } else if (route === '/cad') {
+    lastmod = getFileModTime('./src/pages/CadPage.tsx');
   } else {
-    // Static pages: use current date
+    // Fallback: use current date
     lastmod = new Date().toISOString().split('T')[0];
   }
   

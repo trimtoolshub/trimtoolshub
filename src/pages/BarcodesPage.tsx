@@ -1,4 +1,5 @@
 import { AdSlot } from '../components/ads/AdSlot';
+import SEOHead, { generatePageTitle, generateCanonicalUrl, generateJsonLd } from '../lib/seo';
 
 const barcodeFeatures = [
   {
@@ -16,8 +17,24 @@ const barcodeFeatures = [
 ];
 
 export function BarcodesPage() {
+  const title = generatePageTitle('Barcode Lab');
+  const url = generateCanonicalUrl('/barcodes');
+  const jsonLd = generateJsonLd({
+    name: 'Barcode Lab',
+    url: url,
+    description: 'Create CODE128 & EAN-13 sets with label sheet layouts ready to print.',
+  });
+
   return (
-    <div className="space-y-12">
+    <>
+      <SEOHead
+        title={title}
+        description="Create CODE128 & EAN-13 sets with label sheet layouts ready to print."
+        canonical={url}
+        ogImage="/og-default.png"
+        jsonLd={jsonLd}
+      />
+      <div className="space-y-12">
       <header className="rounded-3xl border border-white/10 bg-slate-900/70 p-10 shadow-xl shadow-black/30">
         <span className="text-sm font-semibold uppercase tracking-[0.4em] text-brand-accent">Barcode Lab</span>
         <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">Generate compliant barcodes and monetize the workflow.</h1>
@@ -50,6 +67,7 @@ export function BarcodesPage() {
         </ul>
       </section>
     </div>
+    </>
   );
 }
 

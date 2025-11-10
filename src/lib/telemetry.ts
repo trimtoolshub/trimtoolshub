@@ -59,20 +59,30 @@ function appendScript(options: ScriptOptions) {
 }
 
 function setupGoogleAnalytics(measurementId: string) {
-  appendScript({
-    id: 'tth-gtag',
-    src: `https://www.googletagmanager.com/gtag/js?id=${measurementId}`,
-    async: true,
-  });
-
   const w = window as GlobalWindow;
 
+  // Initialize dataLayer and gtag before loading script
   w.dataLayer = w.dataLayer || [];
   w.gtag =
     w.gtag ||
     function gtag(...args: unknown[]) {
       w.dataLayer?.push(args);
     };
+
+  // Set Consent Mode v2 default to denied
+  w.gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500,
+  });
+
+  appendScript({
+    id: 'tth-gtag',
+    src: `https://www.googletagmanager.com/gtag/js?id=${measurementId}`,
+    async: true,
+  });
 
   w.gtag('js', new Date());
   w.gtag('config', measurementId, { anonymize_ip: true });
@@ -114,14 +124,8 @@ function setupMetaPixel(pixelId: string) {
   w.fbq?.('track', 'PageView');
 }
 
-function setupAdSense(clientId: string) {
-  appendScript({
-    id: 'tth-adsense',
-    src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${clientId}`,
-    async: true,
-    crossOrigin: 'anonymous',
-  });
-}
+// AdSense loading is now handled by loadAdsense.ts and only called after consent
+// This function is removed as it's no longer needed
 
 export function initializeTelemetry() {
   if (typeof window === 'undefined' || state !== 'idle') {
@@ -145,9 +149,8 @@ export function initializeTelemetry() {
     setupMetaPixel(metaPixelId);
   }
 
-  if (adClient) {
-    setupAdSense(adClient);
-  }
+  // AdSense is now loaded separately after consent via TelemetryManager
+  // Do not call setupAdSense here
 
   state = 'initialized';
 }
